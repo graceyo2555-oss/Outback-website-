@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Outback Jack — Super Member Club</title>
+<meta name="description" content="Outback Jack — Super Member Club on Solana. Animated, fast, and fun." />
+<meta name="theme-color" content="#9945FF" />
+
+<!-- Social card (optional inline) -->
+<meta property="og:title" content="Outback Jack — Super Member Club" />
+<meta property="og:description" content="Animated, fast, and fun. Built on Solana." />
+<meta property="og:type" content="website" />
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --bg1:#0d0619; --bg2:#170b31; --bg3:#2a1764;
+    --sol:#9945FF; --sol2:#14F195; --ink:#e5e7eb;
+  }
+  body{
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(153,69,255,.28), transparent 60%),
+      radial-gradient(900px 400px at 85% 5%, rgba(20,241,149,.16), transparent 60%),
+      linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 42%, var(--bg1) 100%);
+    color: var(--ink);
+    overflow-x:hidden;
+  }
+  .glass{backdrop-filter: blur(10px); background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}
+  .sol-border{box-shadow: 0 0 0 1px rgba(153,69,255,.35), 0 0 30px rgba(153,69,255,.12)}
+  .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1rem;border-radius:14px;font-weight:700;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));transition:transform .18s, box-shadow .18s}
+  .btn:hover{transform:translateY(-1px); box-shadow:0 10px 30px rgba(153,69,255,.18)}
+  .shimmer{position:relative;overflow:hidden}
+  .shimmer:after{content:"";position:absolute;inset:-200% -50%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);transform:rotate(8deg);animation:shine 2.2s linear infinite}
+  @keyframes shine{0%{transform:translateX(-60%) rotate(8deg)}100%{transform:translateX(60%) rotate(8deg)}}
+  .ticker{white-space:nowrap; animation:scroll 25s linear infinite}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .tilt{transform-style:preserve-3d; perspective:800px}
+  .tilt:hover .tilt-up{transform:rotateX(6deg) rotateY(-6deg)}
+  .badge{border:1px solid rgba(255,255,255,.18); background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}
+  .orbit{position:relative; width:240px; height:240px}
+  .orbit span{position:absolute; inset:0; border-radius:999px; border:1px dashed rgba(255,255,255,.16); animation:spin 18s linear infinite}
+  .orbit img{position:absolute; width:46px; height:46px; object-fit:cover; border-radius:999px; box-shadow:0 0 20px rgba(153,69,255,.35)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  /* Particle canvas sits behind content */
+  #fx, #rain { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  main, header, footer { position: relative; z-index: 1; }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Background FX canvases -->
+<canvas id="fx"></canvas>
+<canvas id="rain" style="display:none"></canvas>
+
+<!-- ========= NAV ========= -->
+<header class="sticky top-0 z-40">
+  <div class="backdrop-blur-md bg-black/25 border-b border-white/10">
+    <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl grid place-items-center glass sol-border">
+          <!-- boomerang / roo mark -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M3 14c5-1 7-6 11-6 3 0 5 2 7 5-4-2-6-1-8 1-2 3-6 2-10 0z" stroke="#a78bfa" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="font-extrabold tracking-wide text-white text-lg">Outback Jack</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-5 text-sm text-gray-300">
+        <a href="#members">Members</a>
+        <a href="#token">Token</a>
+        <a href="#tiers">Tiers</a>
+        <a href="#howto">How to Buy</a>
+        <button id="party" class="btn shimmer">🎉 Party Mode</button>
+      </div>
+      <button id="partySm" class="sm:hidden btn">🎉</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ========= HERO ========= -->
+  <section class="max-w-6xl mx-auto px-4 pt-12 pb-10">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h1 class="text-4xl md:text-6xl font-black leading-tight">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#14F195]">Outback Jack</span><br/>
+          <span class="opacity-90">Super Member Club</span>
+        </h1>
+        <p class="mt-4 text-gray-300 text-lg">
+          Premium vibes, animated goodies, and a tight Solana crew. Join, flex, and ride the outback.
+        </p>
+
+        <!-- Contract + Live Stats -->
+        <div class="mt-6 glass sol-border rounded-2xl p-4">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div class="text-sm">
+              <div class="text-gray-400">Contract (SOL)</div>
+              <div class="font-mono text-white" id="displayAddress">—</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="copyBtn" class="btn">Copy</button>
+              <a id="viewBtn" target="_blank" class="btn" href="#">Explorer</a>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-3">
+            <div class="min-w-[140px] glass rounded-xl px-3 py-2">
+              <div class="text-xs text-gray-400">Price (USD)</div>
+              <div class="text-lg font-semibold" id="priceUsd">—</div>
+            </div>
+            <div class="min-w-[140px] glass rounded-xl px-3 py-2">
+              <div class="text-xs text-gray-400">24h Volume</div>
+              <div class="text-lg font-semibold" id="vol24h">—</div>
+            </div>
+            <div class="min-w-[140px] glass rounded-xl px-3 py-2">
+              <div class="text-xs text-gray-400">FDV / MC (est.)</div>
+              <div class="text-lg font-semibold" id="mcap">—</div>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <a id="buyLink" class="btn shimmer" target="_blank" href="#">Buy</a>
+            <a id="chartLink" class="btn" target="_blank" href="#">Chart</a>
+            <a class="btn" target="_blank" href="https://t.me/">Telegram</a>
+            <a class="btn" target="_blank" href="https://x.com/">X</a>
+          </div>
+        </div>
+
+        <!-- Scrolling ticker -->
+        <div class="mt-6 overflow-hidden border border-white/10 rounded-xl">
+          <div class="ticker py-2 px-3 text-sm text-gray-300">
+            🔥 Super Members mint coming soon • 🐨 Roo badges live • 🎁 Airdrop quests • 🧩 Mini-games • 💬 Telegram alpha • 📈 Chart ripping (hopefully) •
+          </div>
+        </div>
+      </div>
+
+      <!-- Mascot + Glow -->
+      <div class="relative tilt">
+        <div class="absolute -top-8 -right-6 w-40 h-40 rounded-full blur-3xl opacity-40" style="background:radial-gradient(circle,#9945FF,transparent 60%)"></div>
+        <div class="absolute -bottom-10 -left-8 w-40 h-40 rounded-full blur-3xl opacity-40" style="background:radial-gradient(circle,#14F195,transparent 60%)"></div>
+        <div class="glass sol-border rounded-3xl p-6 tilt-up transition-transform">
+          <div class="text-center">
+            <svg class="mx-auto" width="360" height="240" viewBox="0 0 720 480" fill="none" role="img" aria-label="Outback Jack Mascot">
+              <defs>
+                <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#9945FF"/>
+                  <stop offset="100%" stop-color="#14F195"/>
+                </linearGradient>
+              </defs>
+              <path d="M100 360c85-24 145-132 240-144 72-9 132 30 192 108-108-48-156-18-210 30-54 60-144 36-222 6z" stroke="url(#grad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,.05)"/>
+              <circle cx="600" cy="120" r="6" fill="#14F195"/>
+              <circle cx="580" cy="98" r="4" fill="#9945FF"/>
+              <circle cx="620" cy="142" r="3" fill="#14F195"/>
+            </svg>
+            <h3 class="text-2xl font-extrabold tracking-wide">Animated. Member-ready.</h3>
+            <p class="text-gray-300 mt-2">Toggle party mode for Solana logo rain.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= MEMBERS WALL ========= -->
+  <section id="members" class="max-w-6xl mx-auto px-4 py-12">
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="glass sol-border rounded-3xl p-6">
+        <h2 class="text-3xl font-bold mb-2">Members Wall</h2>
+        <p class="text-gray-300 mb-4">OGs, degens, and adventurers. We see you. ✨</p>
+        <div class="orbit mx-auto my-6">
+          <span></span>
+          <!-- Orbiting avatars (replace src as needed) -->
+          <img src="https://i.pravatar.cc/100?img=12" style="top:-23px; left:97px;">
+          <img src="https://i.pravatar.cc/100?img=22" style="bottom:-18px; left:15px;">
+          <img src="https://i.pravatar.cc/100?img=33" style="bottom:-18px; right:15px;">
+          <img src="https://i.pravatar.cc/100?img=44" style="top:40px; right:-18px;">
+          <img src="https://i.pravatar.cc/100?img=55" style="top:40px; left:-18px;">
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="badge px-3 py-1 rounded-full text-sm">Early</span>
+          <span class="badge px-3 py-1 rounded-full text-sm">Memelord</span>
+          <span class="badge px-3 py-1 rounded-full text-sm">Builder</span>
+          <span class="badge px-3 py-1 rounded-full text-sm">Alpha</span>
+          <span class="badge px-3 py-1 rounded-full text-sm">Diamond</span>
+        </div>
+      </div>
+
+      <div class="glass sol-border rounded-3xl p-6">
+        <h3 class="text-2xl font-bold mb-4">Member Perks</h3>
+        <ul class="space-y-2 text-gray-300">
+          <li>✅ Exclusive sticker drops & meme assets</li>
+          <li>✅ Early access to mini-games & quests</li>
+          <li>✅ Raffles, WL spots, and collab alpha</li>
+          <li>✅ Private chat & governance vibes</li>
+        </ul>
+        <div class="mt-5 flex gap-3">
+          <a class="btn shimmer" target="_blank" href="https://t.me/">Join Telegram</a>
+          <a class="btn" target="_blank" href="https://x.com/">Follow X</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= TIERS ========= -->
+  <section id="tiers" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-3xl font-bold mb-6">Super Member Tiers</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Tier 1 -->
+      <div class="glass sol-border rounded-3xl p-6 tilt group transition-transform">
+        <div class="tilt-up">
+          <div class="text-sm text-gray-400">Tier I</div>
+          <div class="text-2xl font-extrabold">Free Ranger</div>
+          <p class="text-gray-300 mt-2">Access to news, public drops, and open chats.</p>
+          <ul class="mt-3 space-y-1 text-sm text-gray-300">
+            <li>• Public quests</li>
+            <li>• Members wall entry</li>
+            <li>• Sticker previews</li>
+          </ul>
+          <a class="btn mt-4" href="#howto">Get $OJACK</a>
+        </div>
+      </div>
+      <!-- Tier 2 -->
+      <div class="glass sol-border rounded-3xl p-6 tilt group transition-transform">
+        <div class="tilt-up">
+          <div class="text-sm text-gray-400">Tier II</div>
+          <div class="text-2xl font-extrabold">Plus Outrider</div>
+          <p class="text-gray-300 mt-2">Holders above threshold unlock extras.</p>
+          <ul class="mt-3 space-y-1 text-sm text-gray-300">
+            <li>• Exclusive sticker drops</li>
+            <li>• Raffles & WL spots</li>
+            <li>• Private alpha chat</li>
+          </ul>
+          <a class="btn shimmer mt-4" href="#howto">Upgrade</a>
+        </div>
+      </div>
+      <!-- Tier 3 -->
+      <div class="glass sol-border rounded-3xl p-6 tilt group transition-transform">
+        <div class="tilt-up">
+          <div class="text-sm text-gray-400">Tier III</div>
+          <div class="text-2xl font-extrabold">Ultra Jackaroo</div>
+          <p class="text-gray-300 mt-2">Top holders & contributors. Maximum perks.</p>
+          <ul class="mt-3 space-y-1 text-sm text-gray-300">
+            <li>• Early game builds</li>
+            <li>• Feature votes</li>
+            <li>• Merch allowlist</li>
+          </ul>
+          <a class="btn mt-4" href="#howto">Ascend</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= TOKEN ========= -->
+  <section id="token" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-3xl font-bold mb-6">Token & Links</h2>
+    <div class="flex flex-wrap gap-3">
+      <a class="btn" target="_blank" href="#">Raydium</a>
+      <a class="btn" target="_blank" href="#">Jupiter</a>
+      <a class="btn" target="_blank" href="#">DexScreener</a>
+      <a class="btn" target="_blank" href="#">Birdeye</a>
+      <a class="btn" target="_blank" href="#">Docs</a>
+    </div>
+  </section>
+
+  <!-- ========= HOW TO BUY ========= -->
+  <section id="howto" class="max-w-6xl mx-auto px-4 py-12">
+    <h2 class="text-3xl font-bold mb-6">How to Buy</h2>
+    <ol class="list-decimal list-inside text-gray-300 space-y-2">
+      <li>Get a Solana wallet (Phantom, Solflare) and fund with SOL.</li>
+      <li>Open the “Buy” link — Raydium/Jupiter swap prefilled for $OJACK.</li>
+      <li>Confirm the mint address matches this site. Slippage 0.5–2% if needed.</li>
+      <li>Hold and flex your Super Member status. 🤠</li>
+    </ol>
+  </section>
+</main>
+
+<!-- ========= FOOTER ========= -->
+<footer class="border-t border-white/10">
+  <div class="max-w-6xl mx-auto px-4 py-8 text-sm text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div>© <span id="year"></span> Outback Jack • Built on Solana</div>
+    <div class="opacity-80">Not financial advice. Memes only.</div>
+  </div>
+</footer>
+
+<!-- ========= CONFIG + FX LOGIC ========= -->
+<script>
+  // ====== TODO: Set your real mint address & links ======
+  const TOKEN_ADDRESS = "So11111111111111111111111111111111111111112"; // REPLACE with your Solana mint
+  const TOTAL_SUPPLY = 1000000000; // Adjust if you want MC estimate
+  const LINKS = {
+    buy: "https://app.jup.ag/swap/SOL-So11111111111111111111111111111111111111112", // replace with your mint
+    chart: "https://dexscreener.com/solana/" + TOKEN_ADDRESS,
+    explorer: "https://solscan.io/token/" + TOKEN_ADDRESS
+  };
+  // =======================================================
+
+  // Short display
+  function shortAddr(a){ return (!a||a.length<10) ? (a||"—") : (a.slice(0,6) + "..." + a.slice(-4)); }
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("displayAddress").textContent = shortAddr(TOKEN_ADDRESS);
+  const copyBtn = document.getElementById("copyBtn");
+  const viewBtn = document.getElementById("viewBtn");
+  const buyLink = document.getElementById("buyLink");
+  const chartLink = document.getElementById("chartLink");
+  viewBtn.href = LINKS.explorer; buyLink.href = LINKS.buy; chartLink.href = LINKS.chart;
+
+  copyBtn.addEventListener("click", async () => {
+    try{ await navigator.clipboard.writeText(TOKEN_ADDRESS);
+      copyBtn.textContent = "Copied!"; setTimeout(()=>copyBtn.textContent="Copy", 1200);
+    }catch(e){ alert("Mint: " + TOKEN_ADDRESS); }
+  });
+
+  // ===== DexScreener live stats =====
+  async function fetchStats(){
+    const priceEl = document.getElementById("priceUsd");
+    const volEl = document.getElementById("vol24h");
+    const mcEl = document.getElementById("mcap");
+    if(!TOKEN_ADDRESS || TOKEN_ADDRESS.includes("So1111111")){
+      priceEl.textContent = "Set mint"; volEl.textContent = "—"; mcEl.textContent = "—"; return;
+    }
+    try{
+      const res = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${TOKEN_ADDRESS}`);
+      if(!res.ok) throw new Error("DexScreener error");
+      const data = await res.json();
+      const pairs = (data.pairs||[]).sort((a,b)=> (b.liquidity?.usd||0) - (a.liquidity?.usd||0));
+      const top = pairs[0]; if(!top) throw new Error("No pairs");
+      const price = parseFloat(top.priceUsd || top.priceNative || 0);
+      const vol24 = top.volume?.h24 || 0;
+      priceEl.textContent = price ? "$"+Number(price).toLocaleString(undefined,{maximumFractionDigits:6}) : "—";
+      volEl.textContent = vol24 ? "$"+Number(vol24).toLocaleString() : "—";
+      mcEl.textContent = (price && TOTAL_SUPPLY) ? "$"+(price*TOTAL_SUPPLY).toLocaleString(undefined,{maximumFractionDigits:0}) : "—";
+    }catch(e){
+      priceEl.textContent="N/A"; volEl.textContent="N/A"; mcEl.textContent="—";
+    }
+  }
+  fetchStats(); setInterval(fetchStats, 60000);
+
+  // ===== Fancy background particles =====
+  const cvs = document.getElementById('fx'), ctx = cvs.getContext('2d');
+  let W=innerWidth, H=innerHeight; cvs.width=W; cvs.height=H;
+  let dots = Array.from({length: 80}, ()=> ({
+    x: Math.random()*W, y: Math.random()*H,
+    vx: (Math.random()-.5)*0.6, vy:(Math.random()-.5)*0.6,
+    r: Math.random()*1.6+0.4
+  }));
+  function resize(){ W=innerWidth; H=innerHeight; cvs.width=W; cvs.height=H; rain.width=W; rain.height=H; }
+  addEventListener('resize', resize);
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of dots){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = Math.random()<.5 ? '#14F19555' : '#9945FF55';
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  } tick();
+
+  // ===== Party mode: Solana logo rain =====
+  const rain = document.getElementById('rain'), rctx = rain.getContext('2d');
+  let raining=false, drops=[];
+  const solSVG = encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 256 256'>
+    <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#9945FF'/><stop offset='100%' stop-color='#14F195'/></linearGradient></defs>
+    <rect width='256' height='256' rx='56' fill='url(#g)'/>
+    <path d='M60 92h120l-18 18H42zM74 146h120l-18 18H56zM92 119h122l-18 18H74z' fill='white' opacity='.92'/>
+  </svg>`);
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + solSVG;
+
+  function startRain(){
+    raining=true; rain.style.display='block';
+    drops = Array.from({length: 50}, ()=> ({
+      x: Math.random()*W, y: -Math.random()*H, s: Math.random()*0.8+0.6, vy: Math.random()*1.8+0.8, rot: Math.random()*360
+    }));
+    loopRain();
+    setTimeout(()=>{ if(raining) stopRain(); }, 12000); // auto stop after 12s
+  }
+  function stopRain(){ raining=false; rain.style.display='none'; }
+  function loopRain(){
+    if(!raining) return;
+    rctx.clearRect(0,0,W,H);
+    for(const d of drops){
+      d.y += d.vy; d.rot += d.vy*2;
+      if(d.y > H+60) { d.y = -60; d.x = Math.random()*W; }
+      const size = 34*d.s;
+      rctx.save();
+      rctx.translate(d.x, d.y);
+      rctx.rotate(d.rot * Math.PI/180);
+      rctx.drawImage(img, -size/2, -size/2, size, size);
+      rctx.restore();
+    }
+    requestAnimationFrame(loopRain);
+  }
+  function toggleRain(){ if(raining) stopRain(); else startRain(); }
+  document.getElementById('party').addEventListener('click', toggleRain);
+  document.getElementById('partySm').addEventListener('click', toggleRain);
+
+  // ===== Slight magnetic hover for buttons =====
+  document.querySelectorAll('.btn').forEach(btn=>{
+    btn.addEventListener('mousemove', (e)=>{
+      const r = btn.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width/2)) / r.width;
+      const dy = (e.clientY - (r.top + r.height/2)) / r.height;
+      btn.style.transform = `translate(${dx*4}px, ${dy*4}px)`;
+    });
+    btn.addEventListener('mouseleave', ()=> btn.style.transform='translate(0,0)');
+  });
+
+  // ===== Tilt depth on cards =====
+  document.querySelectorAll('.tilt').forEach(card=>{
+    card.addEventListener('mousemove',(e)=>{
+      const r = card.getBoundingClientRect();
+      const rx = ((e.clientY - r.top)/r.height - .5) * -8;
+      const ry = ((e.clientX - r.left)/r.width - .5) * 8;
+      card.querySelector('.tilt-up').style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    card.addEventListener('mouseleave',()=> card.querySelector('.tilt-up').style.transform='rotateX(0) rotateY(0)');
+  });
+</script>
+</body>
+        </html>

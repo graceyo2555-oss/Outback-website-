@@ -1,244 +1,204 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Outback Jack — $JACK on Solana</title>
-  <meta name="description" content="Outback Jack ($JACK) — Solana's wildest meme kangaroo. Knock out FUD, hop on the Solana wave." />
-  <meta name="theme-color" content="#0b0b13" />  <!-- ===== QUICK EDITS =====
-  1) Replace CONTRACT_MINT with your real SPL token mint.
-  2) Replace links for Buy/Chart/Telegram/Twitter.
-  3) Put your mascot PNG/SVG at ./assets/outback-jack.png (or change the src below).
-  4) Drop your animated GIFs into ./gifs/ then match the file names in the GIF GALLERY section.
-  5) Everything is one file; you can also inline images as data: URLs later if you want truly single-file delivery.
-  ========================== -->  <!-- Social Preview -->  <meta property="og:title" content="Outback Jack — $JACK on Solana" />
-  <meta property="og:description" content="From the Outback to on‑chain. The $JACK kangaroo knocks out FUD." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/outback-jack.png" />  <style>
-    :root{
-      --bg:#0b0b13;
-      --card:#0f0f18cc;
-      --text:#e8f6ff;
-      --muted:#9fb3c8;
-      --solana-1:#9945FF; /* purple */
-      --solana-2:#14F195; /* neon green */
-      --solana-3:#00C2FF; /* aqua */
-      --accent: var(--solana-2);
-      --radius: 20px;
-      --shadow: 0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.25);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 10% -10%, #2b1d4a55, transparent 60%),
-        radial-gradient(900px 700px at 100% 0%, #0a4a4255, transparent 50%),
-        linear-gradient(160deg, #0b0b13 0%, #0b0d1a 100%);
-      overflow-x:hidden;
-    }
-    .solana-stripes{
-      position:fixed; inset:0; pointer-events:none; opacity:.07; mix-blend:screen;
-      background:
-        linear-gradient(135deg, var(--solana-1), var(--solana-3));
-      mask:
-        linear-gradient(#0000, #000 10%, #000 90%, #0000),
-        repeating-linear-gradient( to bottom, #000 0 40px, #0000 40px 64px);
-      -webkit-mask:
-        linear-gradient(#0000, #000 10%, #000 90%, #0000),
-        repeating-linear-gradient( to bottom, #000 0 40px, #0000 40px 64px);
-    }
-    header{
-      max-width:1100px; margin:24px auto; padding:0 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .brand{display:flex; align-items:center; gap:14px}
-    .brand img{width:56px; height:56px; object-fit:contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,.4));}
-    .brand h1{font-size:22px; margin:0; letter-spacing:.4px}
-    .badge{font-weight:700; padding:4px 10px; border-radius:999px; background:linear-gradient(90deg,var(--solana-1),var(--solana-3)); color:#0b0b13}
+  <meta name="description" content="Outback Jack ($JACK) — the Solana kangaroo that knocks out FUD. Meme, community, fun." />
+  <style>
+    :root { --brand:#14a8ff; --bg:#0d0d0d; --card:#1a1a1a; --ink:#fff; }
+    * { box-sizing:border-box }
+    body { margin:0; font-family: system-ui, Arial, sans-serif; color:var(--ink); background:var(--bg); }
+    a { color:inherit; }
+    h1,h2,h3 { margin:0 0 10px }
+    .wrap { max-width:980px; margin:0 auto; padding:20px; }
 
-    .cta-row{display:flex; gap:10px; flex-wrap:wrap}
-    .btn{
-      text-decoration:none; color:#091017; font-weight:700; letter-spacing:.3px;
-      background:linear-gradient(90deg,var(--solana-1),var(--solana-3));
-      border:none; padding:12px 16px; border-radius:12px; box-shadow:var(--shadow);
-      transition: transform .12s ease, filter .12s ease; display:inline-flex; align-items:center; gap:8px;
+    /* Buttons & layout */
+    .btn { display:inline-block; padding:10px 16px; margin:6px; border-radius:10px; background:var(--brand); color:#fff; text-decoration:none; font-weight:700 }
+    .btn:hover { filter:brightness(.92); }
+    .cta-row, .row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .card { background:var(--card); border-radius:16px; padding:18px; margin:14px 0; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    .pill { background:#222; padding:6px 12px; border-radius:999px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    .code { background:#121212; border:1px solid #222; border-radius:12px; padding:12px; flex:1; }
+    .copy { padding:8px 12px; border:0; border-radius:8px; background:#333; color:#fff; cursor:pointer; }
+    .subtitle { opacity:.85 }
+    img.logo { max-width:180px; display:block; margin:8px auto 4px; }
+
+    /* Grid for GIF gallery */
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:12px; }
+    .gif { width:100%; border-radius:12px; display:block; }
+
+    .footer { text-align:center; color:#aaa; font-size:13px; padding:28px 0 18px; }
+
+    /* FALLING GIF BACKGROUND LAYER */
+    #gif-rain{ position:fixed; inset:0; overflow:hidden; z-index:-1; pointer-events:none; }
+    .gif-drop{ position:absolute; top:-20vh; will-change:transform,opacity; opacity:.9; }
+    @media (prefers-reduced-motion: reduce){ #gif-rain{ display:none } }
+    @keyframes fall {
+      0%   { transform: translate3d(var(--x,0), -20vh, 0) rotate(var(--r,0deg)); opacity:0 }
+      5%   { opacity:.95 }
+      100% { transform: translate3d(var(--x,0), 120vh, 0) rotate(calc(var(--r,0deg) + 90deg)); opacity:.95 }
     }
-    .btn:hover{transform:translateY(-1px); filter:saturate(1.1)}
-
-    main{max-width:1100px; margin:0 auto; padding:24px 16px 80px}
-
-    .hero{display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center}
-    .card{background:linear-gradient(180deg, #121220b3, #0b0b13b3); border:1px solid #1e2230; border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); backdrop-filter: blur(8px)}
-    .hero img{width:100%; max-width:440px; margin:auto; display:block}
-    .title{font-size:42px; line-height:1.05; margin:0 0 6px}
-    .subtitle{margin:0 0 16px; color:var(--muted)}
-
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      background:#0b0f17; color:#cde8ff; border:1px solid #1f2433; border-radius:12px; padding:12px 12px; flex:1; min-width:260px; position:relative;
+    @keyframes sway {
+      0% { transform: translateX(0) }
+      50% { transform: translateX(12px) }
+      100% { transform: translateX(0) }
     }
-    .code small{color:var(--muted)}
-    .mono{font-weight:700}
-    .copy{cursor:pointer; padding:12px 14px; border-radius:12px; background:#12182b; color:#d8f9ff; border:1px solid #23304a}
-    .copy:hover{background:#162038}
-
-    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#111826; border:1px solid #1f2433; color:#cde8ff}
-
-    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
-    .gif{
-      width:100%; aspect-ratio: 1/1; object-fit:cover; border-radius:16px; border:1px solid #1c2232; background:#0d0f16; box-shadow:var(--shadow)
-    }
-
-    .footer{margin-top:34px; display:flex; flex-direction:column; gap:10px; align-items:center}
-    .footer .cta-row{justify-content:center}
-    .tiny{font-size:12px; color:#8aa1b7}
-
-    /* Responsive */
-    @media (max-width: 960px){
-      .hero{grid-template-columns:1fr; text-align:center}
-      .hero img{max-width:360px}
-      .title{font-size:36px}
-    }
-    @media (max-width: 680px){
-      header{flex-direction:column; gap:10px}
-      .grid{grid-template-columns:1fr 1fr}
-    }
-    @media (max-width: 420px){
-      .grid{grid-template-columns:1fr}
-    }
-  </style></head>
+  </style>
+</head>
 <body>
-  <div class="solana-stripes" aria-hidden="true"></div>  <header>
-    <div class="brand">
-      <img src="assets/outback-jack.png" alt="Outback Jack Logo" />
-      <div>
-        <h1>Outback Jack <span class="badge">$JACK</span></h1>
-        <div class="pill">On <strong class="mono">Solana</strong></div>
+  <!-- Falling GIF background -->
+  <div id="gif-rain" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <section id="top" class="card" style="text-align:center">
+      <img src="assets/outback-jack.png" alt="Outback Jack Logo" class="logo" />
+      <h1>Outback Jack <span style="color:var(--brand)">$JACK</span></h1>
+      <h2>On <span style="color:#00ffa3">Solana</span></h2>
+
+      <div class="cta-row" style="justify-content:center">
+        <!-- Replace links with your real ones -->
+        <a class="btn" href="https://jup.ag/swap/SOL-JACK" target="_blank" rel="noopener">Buy on Jupiter</a>
+        <a class="btn" href="https://dexscreener.com/solana" target="_blank" rel="noopener">Chart on Dexscreener</a>
+        <a class="btn" href="https://pump.fun" target="_blank" rel="noopener">Pump.fun</a>
       </div>
-    </div>
-    <nav class="cta-row">
-      <a class="btn" id="buyBtn" href="#" target="_blank" rel="noopener">Buy on Jupiter</a>
-      <a class="btn" id="chartBtn" href="#" target="_blank" rel="noopener">Chart on Dexscreener</a>
-      <a class="btn" id="pumpBtn" href="#" target="_blank" rel="noopener">Pump.fun</a>
-    </nav>
-  </header>  <main>
-    <section class="hero">
-      <div class="card">
-        <h2 class="title">From the Outback to On‑Chain.</h2>
-        <p class="subtitle">Meet <strong>Outback Jack</strong> — the Solana kangaroo that <em>knocks out FUD</em>. Built for fun, memes, and community.
-        </p><!-- Contract Box -->
-    <div class="row" style="margin:14px 0 8px">
-      <div class="code">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px">
-          <div>
-            <div style="opacity:.85">Token Mint</div>
-            <div id="mintShort" class="mono" style="font-size:15px; margin-top:4px"></div>
+
+      <p style="margin-top:10px; opacity:.9">
+        From the Outback to On-Chain. Meet <strong>Outback Jack</strong> — the Solana kangaroo that <em>knocks out FUD</em>. Built for fun, memes, and community.
+      </p>
+
+      <!-- Contract Box -->
+      <div class="row" style="margin:14px 0 8px">
+        <div class="code">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px">
+            <div>
+              <div style="opacity:.85">Token Mint</div>
+              <div id="mintShort" class="mono" style="font-size:15px; margin-top:4px"></div>
+            </div>
+            <button class="copy" id="copyBtn">Copy</button>
           </div>
-          <button class="copy" id="copyBtn">Copy</button>
+          <small>Full: <span id="mintFull" class="mono"></span></small>
         </div>
-        <small>Full: <span id="mintFull" class="mono"></span></small>
+        <span class="pill">Ticker: <strong class="mono">$JACK</strong></span>
       </div>
-      <span class="pill">Ticker: <strong class="mono">$JACK</strong></span>
+
+      <div class="cta-row" style="justify-content:center; margin-top:8px">
+        <a class="btn" href="#gif-gallery">View GIF Gallery</a>
+        <a class="btn" href="#community">Join Community</a>
+      </div>
+    </section>
+
+    <!-- GIF GALLERY -->
+    <section id="gif-gallery" class="card">
+      <h3>GIF Gallery</h3>
+      <p class="subtitle">Your uploaded files from <span class="mono">/gifs</span> render here.</p>
+      <div class="grid" id="gifGrid"></div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community" class="card">
+      <h3>Community</h3>
+      <p class="subtitle">Follow, share the memes, and invite frens.</p>
+      <div class="cta-row">
+        <a class="btn" href="#" id="tgLink" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn" href="#" id="twLink" target="_blank" rel="noopener">Twitter / X</a>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn" href="#top">Back to top</a>
+      </div>
+      <div>© <span id="year"></span> Outback Jack — community meme on Solana.</div>
     </div>
-
-    <div class="cta-row" style="margin-top:8px">
-      <a class="btn" href="#gif-gallery">View GIF Gallery</a>
-      <a class="btn" href="#community">Join Community</a>
-    </div>
   </div>
 
-  <div class="card" style="display:flex; align-items:center; justify-content:center">
-    <img src="assets/outback-jack.png" alt="Outback Jack Mascot" />
-  </div>
-</section>
+  <script>
+    /** -------------------------
+     *   REQUIRED EDITS (1/2):
+     *   Paste your real mint here
+     * ------------------------- */
+    const TOKEN_MINT = "So11111111111111111111111111111111111111112"; // <-- replace with your real mint
 
-<!-- GIF GALLERY -->
-<section id="gif-gallery" style="margin-top:28px">
-  <h3 style="margin:0 0 12px">GIF Gallery</h3>
-  <p class="subtitle" style="margin:0 0 14px">Drop your animated images into <span class="mono">/gifs</span> and match these file names. You can add or remove cards freely.</p>
-  <div class="grid">
-    <img class="gif" src="gifs/jack-rocket.gif" alt="Jack rocket" />
-    <img class="gif" src="gifs/jack-boxing-bear.gif" alt="Jack boxing bear" />
-    <img class="gif" src="gifs/jack-boomerang.gif" alt="Jack boomerang" />
-  </div>
-</section>
+    /** ------------------------------------
+     *   REQUIRED EDITS (2/2):
+     *   Your uploaded GIF file names
+     *   (must live in /gifs/ folder)
+     * ------------------------------------ */
+    const GIFS = [
+      "IMG_20251004_201500_343.gif",
+      "IMG_20251004_201506_564.gif",
+      "IMG_20251004_202045_351.gif",
+      "IMG_20251004_202056_061.gif",
+      "IMG_20251004_202104_380.gif",
+      "IMG_20251004_202124_245.gif",
+      "IMG_20251004_202153_888.gif"
+    ];
 
-<!-- COMMUNITY -->
-<section id="community" style="margin-top:28px" class="card">
-  <h3 style="margin:0 0 10px">Community</h3>
-  <p class="subtitle" style="margin:0 0 12px">Follow, share the memes, and invite frens.</p>
-  <div class="cta-row">
-    <a class="btn" href="#" id="tgLink" target="_blank" rel="noopener">Telegram</a>
-    <a class="btn" href="#" id="twLink" target="_blank" rel="noopener">Twitter / X</a>
-  </div>
-</section>
+    // ---- Mint display + copy ----
+    (function mintBox(){
+      const full = TOKEN_MINT.trim();
+      const short = full.length > 12 ? (full.slice(0,6) + "..." + full.slice(-6)) : full;
+      document.getElementById("mintFull").textContent = full;
+      document.getElementById("mintShort").textContent = short;
+      document.getElementById("copyBtn").addEventListener("click", () => {
+        navigator.clipboard.writeText(full);
+        const b = document.getElementById("copyBtn");
+        const old = b.textContent; b.textContent = "Copied!"; setTimeout(()=> b.textContent = old, 900);
+      });
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
 
-<div class="footer">
-  <div class="cta-row">
-    <a class="btn" href="#top">Back to top</a>
-  </div>
-  <div class="tiny">© <span id="year"></span> Outback Jack — community meme on Solana.</div>
-</div>
+    // ---- Falling GIF background ----
+    (function initGifRain(){
+      const layer = document.getElementById("gif-rain");
+      if (!layer || !GIFS.length) return;
 
-  </main>  <script>
-    // ====== CONFIG: put your real SPL mint here ======
-    const CONTRACT_MINT = "ENTER_YOUR_JACK_MINT_ADDRESS"; // e.g. 9wFF...abc
+      // Preload
+      GIFS.forEach(name => { const img = new Image(); img.src = "gifs/" + name; });
 
-    // Optional: Set your links here once you have the mint
-    const LINKS = {
-      jupiter: `https://jup.ag/swap/SOL-${encodeURIComponent(CONTRACT_MINT)}`,
-      dexscreener: `https://dexscreener.com/solana/${encodeURIComponent(CONTRACT_MINT)}`,
-      pumpfun: `https://www.pump.fun/coin/${encodeURIComponent(CONTRACT_MINT)}`,
-      telegram: "https://t.me/outbackjack", // change me
-      twitter: "https://x.com/outbackjack"  // change me
-    };
+      let onScreen = 0;
+      const rng = (min,max)=>Math.random()*(max-min)+min;
+      const pick = arr => arr[Math.floor(Math.random()*arr.length)];
 
-    // ====== Helpers ======
-    const short = (addr) => addr && addr.length > 12 ? `${addr.slice(0,6)}…${addr.slice(-6)}` : addr;
+      const MAX_CONCURRENT = 14, MIN_SIZE = 56, MAX_SIZE = 140, MIN_SPEED = 8, MAX_SPEED = 18, SPAWN_MS = 700;
 
-    // Init contract box
-    const mintFullEl = document.getElementById('mintFull');
-    const mintShortEl = document.getElementById('mintShort');
-    const copyBtn = document.getElementById('copyBtn');
-    mintFullEl.textContent = CONTRACT_MINT;
-    mintShortEl.textContent = short(CONTRACT_MINT);
-
-    copyBtn.addEventListener('click', async () => {
-      try{
-        await navigator.clipboard.writeText(CONTRACT_MINT);
-        copyBtn.textContent = 'Copied!';
-        setTimeout(()=>copyBtn.textContent='Copy', 1400);
-      }catch(e){
-        alert('Copy failed — long‑press to select and copy.');
+      function spawn(){
+        if (onScreen >= MAX_CONCURRENT) return;
+        const file = pick(GIFS);
+        const el = document.createElement("img");
+        el.src = "gifs/" + file;
+        el.className = "gif-drop";
+        el.style.width = rng(MIN_SIZE, MAX_SIZE) + "px";
+        el.style.left = rng(-5, 100) + "vw";
+        el.style.setProperty("--x", "0");
+        el.style.setProperty("--r", rng(-30,30) + "deg");
+        const delay = rng(0, 2), fallS = rng(MIN_SPEED, MAX_SPEED);
+        el.style.animation = [
+          `fall ${fallS}s linear ${delay}s forwards`,
+          `sway ${rng(4,8)}s ease-in-out ${delay}s infinite`
+        ].join(",");
+        onScreen++; layer.appendChild(el);
+        setTimeout(()=>{ el.remove(); onScreen--; }, (fallS+delay)*1000 + 200);
       }
-    });
 
-    // Wire links
-    const buyBtn = document.getElementById('buyBtn');
-    const chartBtn = document.getElementById('chartBtn');
-    const pumpBtn = document.getElementById('pumpBtn');
-    const tgLink = document.getElementById('tgLink');
-    const twLink = document.getElementById('twLink');
+      const timer = setInterval(spawn, SPAWN_MS);
+      document.addEventListener("visibilitychange",()=>{ if(document.hidden) clearInterval(timer); });
+      for (let i=0;i<Math.min(6,MAX_CONCURRENT);i++) spawn();
+    })();
 
-    if(CONTRACT_MINT && !CONTRACT_MINT.startsWith('ENTER_')){
-      buyBtn.href = LINKS.jupiter;
-      chartBtn.href = LINKS.dexscreener;
-      pumpBtn.href = LINKS.pumpfun;
-    } else {
-      buyBtn.href = '#';
-      chartBtn.href = '#';
-      pumpBtn.href = '#';
-    }
-    tgLink.href = LINKS.telegram; twLink.href = LINKS.twitter;
-
-    // Footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Hide broken GIF tiles gracefully
-    document.querySelectorAll('img.gif').forEach(img=>{
-      img.addEventListener('error', ()=>{ img.style.display='none'; });
-    });
-  </script></body>
+    // ---- Auto-render GIF gallery thumbs from GIFS[] ----
+    (function renderThumbs(){
+      const grid = document.getElementById("gifGrid");
+      GIFS.forEach(name=>{
+        const img = document.createElement("img");
+        img.className = "gif";
+        img.src = "gifs/" + name;
+        img.alt = name.replace(/[-_]/g," ").replace(/\.\w+$/,"");
+        grid.appendChild(img);
+      });
+    })();
+  </script>
+</body>
 </html>

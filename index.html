@@ -311,9 +311,27 @@
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Hide broken GIF tiles gracefully
-    document.querySelectorAll('img.gif').forEach(img=>{
-      img.addEventListener('error', ()=>{ img.style.display='none'; });
+    // Robust GIF loading with fallbacks (so tiles don't disappear if path differs)
+    document.querySelectorAll('img.gif').forEach(img =>{
+      const orig = img.getAttribute('src') || '';
+      const fname = orig.split('/').pop();
+      const base = location.pathname.replace(/[^/]+$/, '');
+      const candidates = Array.from(new Set([
+        orig,
+        `./${fname}`,
+        `gifs/${fname}`,
+        `${base}${fname}`,
+        `${base}gifs/${fname}`
+      ]));
+      let i = 0;
+      img.addEventListener('error', ()=>{
+        i++;
+        if(i < candidates.length){ img.src = candidates[i]; }
+        else{
+          img.style.opacity = .35; // keep a visible placeholder
+          img.alt += ' (file not found)';
+        }
+      }, { once:false });
     });
   </script></body>
-</html>
+  </html>

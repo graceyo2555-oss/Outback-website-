@@ -1,341 +1,361 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Outback Jack — $JACK on Solana</title>
-  <meta name="description" content="Outback Jack ($JACK) — Solana's wildest meme kangaroo. Knock out FUD, hop on the Solana wave." />
-  <meta name="theme-color" content="#0b0b13" />  <!-- ===== QUICK EDITS =====
-  1) Replace CONTRACT_MINT with your real SPL token mint.
-  2) Replace links for Buy/Chart/Telegram/Twitter.
-  3) Put your mascot PNG/SVG at ./assets/outback-jack.png (or change the src below).
-  4) Drop your animated GIFs into ./gifs/ then match the file names in the GIF GALLERY section.
-  5) Everything is one file; you can also inline images as data: URLs later if you want truly single-file delivery.
-  ========================== -->  <!-- Social Preview -->  <meta property="og:title" content="Outback Jack — $JACK on Solana" />
-  <meta property="og:description" content="From the Outback to on‑chain. The $JACK kangaroo knocks out FUD." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/outback-jack.png" />  <style>
-    :root{
-      --bg:#0b0b13;
-      --card:#0f0f18cc;
-      --text:#e8f6ff;
-      --muted:#9fb3c8;
-      --solana-1:#9945FF; /* purple */
-      --solana-2:#14F195; /* neon green */
-      --solana-3:#00C2FF; /* aqua */
-      --accent: var(--solana-2);
-      --radius: 20px;
-      --shadow: 0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.25);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 10% -10%, #2b1d4a55, transparent 60%),
-        radial-gradient(900px 700px at 100% 0%, #0a4a4255, transparent 50%),
-        linear-gradient(160deg, #0b0b13 0%, #0b0d1a 100%);
-      overflow-x:hidden;
-    }
-    .solana-stripes{
-      position:fixed; inset:0; pointer-events:none; opacity:.07; mix-blend:screen;
-      background:
-        linear-gradient(135deg, var(--solana-1), var(--solana-3));
-      mask:
-        linear-gradient(#0000, #000 10%, #000 90%, #0000),
-        repeating-linear-gradient( to bottom, #000 0 40px, #0000 40px 64px);
-      -webkit-mask:
-        linear-gradient(#0000, #000 10%, #000 90%, #0000),
-        repeating-linear-gradient( to bottom, #000 0 40px, #0000 40px 64px);
-    }
-    header{
-      max-width:1100px; margin:24px auto; padding:0 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .brand{display:flex; align-items:center; gap:14px}
-    .brand img{width:56px; height:56px; object-fit:contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,.4));}
-    .brand h1{font-size:22px; margin:0; letter-spacing:.4px}
-    .badge{font-weight:700; padding:4px 10px; border-radius:999px; background:linear-gradient(90deg,var(--solana-1),var(--solana-3)); color:#0b0b13}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TON Treasury Tracker</title>
+<meta name="description" content="Simple TON wallet & treasury tracker for TON + Jettons." />
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><text y='.9em' font-size='90'>💎</text></svg>">
 
-    .cta-row{display:flex; gap:10px; flex-wrap:wrap}
-    .btn{
-      text-decoration:none; color:#091017; font-weight:700; letter-spacing:.3px;
-      background:linear-gradient(90deg,var(--solana-1),var(--solana-3));
-      border:none; padding:12px 16px; border-radius:12px; box-shadow:var(--shadow);
-      transition: transform .12s ease, filter .12s ease; display:inline-flex; align-items:center; gap:8px;
-    }
-    .btn:hover{transform:translateY(-1px); filter:saturate(1.1)}
+<style>
+  :root{
+    --bg:#0b1220; --card:#121a2b; --muted:#8aa0c4; --text:#e6eeff; --accent:#3ea6ff; --good:#00d084; --warn:#ffaa00; --bad:#ff5470; --border:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color:var(--text); background: radial-gradient(1000px 600px at 20% -10%, #19305666, transparent 60%), radial-gradient(800px 500px at 100% 0%, #0e254566, transparent 60%), var(--bg);
+  }
+  .wrap{max-width:1100px; margin:0 auto; padding:28px 16px 56px}
+  header{display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:18px}
+  h1{font-size:22px; font-weight:800; margin:0; letter-spacing:.2px}
+  .tag{padding:4px 10px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:12px}
 
-    main{max-width:1100px; margin:0 auto; padding:24px 16px 80px}
+  .panel{background:var(--card); border:1px solid var(--border); border-radius:18px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
+  .grid{display:grid; gap:12px}
+  @media(min-width:900px){ .grid-3{grid-template-columns: 1.2fr .8fr 1fr} }
+  @media(min-width:900px){ .grid-2{grid-template-columns: 1fr 1fr} }
 
-    .hero{display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center}
-    .card{background:linear-gradient(180deg, #121220b3, #0b0b13b3); border:1px solid #1e2230; border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); backdrop-filter: blur(8px)}
-    .hero img{width:100%; max-width:440px; margin:auto; display:block}
-    .title{font-size:42px; line-height:1.05; margin:0 0 6px}
-    .subtitle{margin:0 0 16px; color:var(--muted)}
+  .controls{display:flex; gap:10px; flex-wrap:wrap}
+  input[type="text"]{
+    flex:1 1 280px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:#0f1627; color:var(--text);
+    outline:none; transition:.2s border;
+  }
+  input[type="text"]::placeholder{color:#6f86ad}
+  button{
+    padding:12px 16px; border-radius:12px; border:1px solid var(--border); background:#0f1627; color:var(--text); cursor:pointer; font-weight:700;
+  }
+  button.primary{background:linear-gradient(180deg, #1c7ed6, #1864ab); border:none}
+  button.ghost{background:transparent}
+  .note{color:var(--muted); font-size:12px}
 
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      background:#0b0f17; color:#cde8ff; border:1px solid #1f2433; border-radius:12px; padding:12px 12px; flex:1; min-width:260px; position:relative;
-    }
-    .code small{color:var(--muted)}
-    .mono{font-weight:700}
-    .copy{cursor:pointer; padding:12px 14px; border-radius:12px; background:#12182b; color:#d8f9ff; border:1px solid #23304a}
-    .copy:hover{background:#162038}
+  .kpi{display:flex; flex-direction:column; gap:6px; padding:14px; border:1px dashed var(--border); border-radius:14px}
+  .kpi .label{color:var(--muted); font-size:12px}
+  .kpi .value{font-size:22px; font-weight:800}
+  .kpi .sub{color:var(--muted); font-size:12px}
 
-    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#111826; border:1px solid #1f2433; color:#cde8ff}
+  .table{width:100%; border-collapse:collapse; margin-top:6px; font-size:14px}
+  .table th, .table td{padding:10px 8px; border-bottom:1px solid var(--border)}
+  .table th{color:#93add1; font-weight:700; text-align:left; font-size:12px}
+  .right{text-align:right}
+  .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
 
-    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
-    .gif{
-      width:100%; aspect-ratio: 1/1; object-fit:cover; border-radius:16px; border:1px solid #1c2232; background:#0d0f16; box-shadow:var(--shadow)
-    }
+  .pill{padding:2px 8px; border-radius:999px; background:#0d1a2b; border:1px solid var(--border); color:#a8c2ea; font-size:12px; display:inline-flex; align-items:center; gap:6px}
+  .status{display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px}
 
-    .footer{margin-top:34px; display:flex; flex-direction:column; gap:10px; align-items:center}
-    .footer .cta-row{justify-content:center}
-    .tiny{font-size:12px; color:#8aa1b7}
-
-    /* Responsive */
-    @media (max-width: 960px){
-      .hero{grid-template-columns:1fr; text-align:center}
-      .hero img{max-width:360px}
-      .title{font-size:36px}
-    }
-    @media (max-width: 680px){
-      header{flex-direction:column; gap:10px}
-      .grid{grid-template-columns:1fr 1fr}
-    }
-    @media (max-width: 420px){
-      .grid{grid-template-columns:1fr}
-    }
-      /* === Falling GIF Background === */
-    .gif-rain{position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0}
-    .gif-drop{position:absolute; top:-20vh; will-change: transform, opacity; opacity:.95; filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));}
-    @keyframes fallY{from{transform:translate3d(0,-20vh,0) rotate(var(--r,0));}
-                     to{transform:translate3d(0,110vh,0) rotate(calc(var(--r,0) + 180deg));}}
-    @media (prefers-reduced-motion: reduce){ .gif-rain{display:none} }
-    /* Keep content above the GIF rain */
-    header, main{position:relative; z-index:1}
-  </style></head>
+  .footer{margin-top:18px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
+  a{color:var(--accent); text-decoration:none}
+  .muted{color:var(--muted)}
+  .hidden{display:none}
+  .warn{color:var(--warn)}
+  .good{color:var(--good)}
+</style>
+</head>
 <body>
-  <div class="solana-stripes" aria-hidden="true"></div>
-  <!-- Falling GIF background -->
-  <div class="gif-rain" aria-hidden="true"></div>  <header>
-    <div class="brand">
-      <img src="assets/outback-jack.png" alt="Outback Jack Logo" />
-      <div>
-        <h1>Outback Jack <span class="badge">$JACK</span></h1>
-        <div class="pill">On <strong class="mono">Solana</strong></div>
+  <div class="wrap">
+    <header>
+      <div style="display:flex; align-items:center; gap:10px">
+        <h1>TON Treasury Tracker</h1>
+        <span class="tag">alpha • client-side only</span>
+      </div>
+      <div class="status" id="status"><span>Ready.</span></div>
+    </header>
+
+    <div class="panel">
+      <div class="controls">
+        <input id="addr" type="text" spellcheck="false" placeholder="Enter TON wallet address (e.g. EQC...)" />
+        <button class="ghost" id="pasteBtn">Paste</button>
+        <button class="ghost" id="exampleBtn">Use Example</button>
+        <button class="primary" id="loadBtn">Load</button>
+      </div>
+      <div class="note" style="margin-top:8px">
+        Tip: Save this page and deploy on Vercel. You can also set <span class="mono">DEFAULT_ADDRESS</span> inside the code to prefill your treasury wallet.
       </div>
     </div>
-    <nav class="cta-row">
-      <a class="btn" id="buyBtn" href="#" target="_blank" rel="noopener">Buy on Jupiter</a>
-      <a class="btn" id="chartBtn" href="#" target="_blank" rel="noopener">Chart on Dexscreener</a>
-      <a class="btn" id="pumpBtn" href="#" target="_blank" rel="noopener">Pump.fun</a>
-    </nav>
-  </header>  <main>
-    <section class="hero">
-      <div class="card">
-        <h2 class="title">From the Outback to On‑Chain.</h2>
-        <p class="subtitle">Meet <strong>Outback Jack</strong> — the Solana kangaroo that <em>knocks out FUD</em>. Built for fun, memes, and community.
-        </p><!-- Contract Box -->
-    <div class="row" style="margin:14px 0 8px">
-      <div class="code">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px">
-          <div>
-            <div style="opacity:.85">Token Mint</div>
-            <div id="mintShort" class="mono" style="font-size:15px; margin-top:4px"></div>
-          </div>
-          <button class="copy" id="copyBtn">Copy</button>
+
+    <div class="grid grid-3" style="margin-top:12px">
+      <div class="panel">
+        <div class="kpi">
+          <div class="label">Total Portfolio Value</div>
+          <div class="value" id="totalUsd">$0.00</div>
+          <div class="sub" id="totalBreakdown">TON $0.00 • Jettons $0.00</div>
         </div>
-        <small>Full: <span id="mintFull" class="mono"></span></small>
       </div>
-      <span class="pill">Ticker: <strong class="mono">$JACK</strong></span>
+      <div class="panel">
+        <div class="kpi">
+          <div class="label">TON Balance</div>
+          <div class="value" id="tonBal">0</div>
+          <div class="sub" id="tonUsdSub">$0.00 (at $—/TON)</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="kpi">
+          <div class="label">Jettons Tracked</div>
+          <div class="value" id="jetCount">0</div>
+          <div class="sub">Priced via GeckoTerminal when available</div>
+        </div>
+      </div>
     </div>
 
-    <div class="cta-row" style="margin-top:8px">
-      <a class="btn" href="#gif-gallery">View GIF Gallery</a>
-      <a class="btn" href="#community">Join Community</a>
+    <div class="panel" style="margin-top:12px">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap">
+        <h2 style="font-size:16px; margin:0">Jettons</h2>
+        <div class="pill"><span>Filter:</span>
+          <select id="filterSel" style="background:transparent; color:#a8c2ea; border:none; outline:none">
+            <option value="all">All</option>
+            <option value="priced">With price</option>
+            <option value="unpriced">No price</option>
+            <option value="nonzero">Non-zero balance</option>
+          </select>
+        </div>
+      </div>
+      <table class="table" id="jetTable">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th class="right">Balance</th>
+            <th class="right">Price (USD)</th>
+            <th class="right">Value (USD)</th>
+          </tr>
+        </thead>
+        <tbody id="jetBody">
+          <tr><td colspan="4" class="muted">No data yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <div class="muted">Data from TonAPI & GeckoTerminal. Prices can be missing for illiquid/new tokens.</div>
+      <div class="muted">Built with ❤️ for TON.</div>
     </div>
   </div>
 
-  <div class="card" style="display:flex; align-items:center; justify-content:center">
-    <img src="assets/outback-jack.png" alt="Outback Jack Mascot" />
-  </div>
-</section>
+<script>
+/** ================================
+ *  BASIC SETTINGS (edit these)
+ *  ================================ */
+const DEFAULT_ADDRESS = ""; // ← put your treasury wallet here to prefill (e.g. "EQBDc5nG...")
+const TONAPI_BASE = "https://tonapi.io";
+const TON_DECIMALS = 9;
 
-<!-- GIF GALLERY -->
-<section id="gif-gallery" style=\"margin-top:28px\">
-  <h3 style="margin:0 0 12px\">GIF Gallery</h3>
-  <p class="subtitle" style=\"margin:0 0 14px\">Your uploaded animated GIFs shown below. If an image doesn't load, the tile stays visible and a warning will appear in the Asset Check panel.</p>
-  <div class=\"grid\" style=\"grid-template-columns: repeat(4, 1fr);\">
-    <img class=\"gif\" src=\"IMG_20251004_201500_343.gif\" alt=\"Jack GIF 1\" />
-    <img class=\"gif\" src=\"IMG_20251004_201506_564.gif\" alt=\"Jack GIF 2\" />
-    <img class=\"gif\" src=\"IMG_20251004_202045_351.gif\" alt=\"Jack GIF 3\" />
-    <img class=\"gif\" src=\"IMG_20251004_202056_061.gif\" alt=\"Jack GIF 4\" />
-    <img class=\"gif\" src=\"IMG_20251004_202104_380.gif\" alt=\"Jack GIF 5\" />
-    <img class=\"gif\" src=\"IMG_20251004_202124_245.gif\" alt=\"Jack GIF 6\" />
-    <img class=\"gif\" src=\"IMG_20251004_202153_888.gif\" alt=\"Jack GIF 7\" style=\"grid-column: span 2;\" />
-  </div>
-  <div id="assetStatus" class=\"card\" style=\"margin-top:14px\">
-    <strong>Asset Check</strong>
-    <div id="assetList" class="tiny" style=\"margin-top:8px; line-height:1.5\"></div>
-  </div>
-</section>
+/** Rate limits & courtesy timeout between token price fetches */
+const PRICE_FETCH_DELAY_MS = 120; // be gentle to APIs
 
-<!-- COMMUNITY -->
-<section id="community" style="margin-top:28px" class="card">
-  <h3 style="margin:0 0 10px">Community</h3>
-  <p class="subtitle" style="margin:0 0 12px">Follow, share the memes, and invite frens.</p>
-  <div class="cta-row">
-    <a class="btn" href="#" id="tgLink" target="_blank" rel="noopener">Telegram</a>
-    <a class="btn" href="#" id="twLink" target="_blank" rel="noopener">Twitter / X</a>
-  </div>
-</section>
+/** Helpers */
+const $ = (id)=>document.getElementById(id);
+const fmt = (n, d=2) => {
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  const v = Number(n);
+  if (Math.abs(v) >= 1000000) return v.toLocaleString(undefined,{maximumFractionDigits:d});
+  return v.toLocaleString(undefined,{minimumFractionDigits: (v>0 && v<1 ? Math.min(4,d+2):0), maximumFractionDigits:d});
+};
+const sleep = (ms)=> new Promise(r=>setTimeout(r,ms));
 
-<div class="footer">
-  <div class="cta-row">
-    <a class="btn" href="#top">Back to top</a>
-  </div>
-  <div class="tiny">© <span id="year"></span> Outback Jack — community meme on Solana.</div>
-</div>
+/** UI elements */
+const addrInput = $("addr");
+const statusEl = $("status");
+const totalUsdEl = $("totalUsd");
+const totalBreakdownEl = $("totalBreakdown");
+const tonBalEl = $("tonBal");
+const tonUsdSubEl = $("tonUsdSub");
+const jetCountEl = $("jetCount");
+const jetBody = $("jetBody");
+const filterSel = $("filterSel");
 
-  </main>  <script>
-    // ====== CONFIG: put your real SPL mint here ======
-    const CONTRACT_MINT = "ENTER_YOUR_JACK_MINT_ADDRESS"; // e.g. 9wFF...abc
+if (DEFAULT_ADDRESS) addrInput.value = DEFAULT_ADDRESS;
 
-    // Optional: Set your links here once you have the mint
-    const LINKS = {
-      jupiter: `https://jup.ag/swap/SOL-${encodeURIComponent(CONTRACT_MINT)}`,
-      dexscreener: `https://dexscreener.com/solana/${encodeURIComponent(CONTRACT_MINT)}`,
-      pumpfun: `https://www.pump.fun/coin/${encodeURIComponent(CONTRACT_MINT)}`,
-      telegram: "https://t.me/outbackjack", // change me
-      twitter: "https://x.com/outbackjack"  // change me
+/** Event wiring */
+$("pasteBtn").onclick = async ()=>{
+  try{
+    const t = await navigator.clipboard.readText();
+    if (t) addrInput.value = t.trim();
+  }catch(e){ notify("Clipboard blocked by browser.", "warn"); }
+};
+$("exampleBtn").onclick = ()=>{
+  addrInput.value = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"; // harmless dummy; replace with a real address
+};
+$("loadBtn").onclick = ()=> loadAll();
+filterSel.onchange = ()=> applyFilter();
+
+/** Notify helper */
+function notify(msg, level=""){
+  statusEl.innerHTML = `<span class="${level}">${msg}</span>`;
+}
+
+/** ==== API fetchers ==== */
+
+/** Get TON (native) balance for account (in TON) */
+async function getTonBalance(address){
+  const url = `${TONAPI_BASE}/v2/accounts/${address}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`TonAPI account: ${r.status}`);
+  const j = await r.json();
+  const ton = (j.balance ?? 0) / (10 ** TON_DECIMALS);
+  return ton;
+}
+
+/** Get Jetton balances (array) */
+async function getJettonBalances(address){
+  const url = `${TONAPI_BASE}/v2/accounts/${address}/jettons?limit=500`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`TonAPI jettons: ${r.status}`);
+  const j = await r.json();
+  // Normalize
+  // TonAPI returns: balances: [{balance, jetton:{address, name, symbol, decimals, image, ...}}]
+  const out = (j.balances || []).map(x=>{
+    const d = x.jetton || {};
+    const dec = Number(d.decimals ?? 9);
+    return {
+      address: (d.address || "").trim(),
+      name: d.name || "Unknown",
+      symbol: d.symbol || "???",
+      decimals: dec,
+      image: d.image,
+      rawBalance: Number(x.balance || 0),
+      balance: Number(x.balance || 0) / (10 ** dec),
+      priceUsd: null,
+      valueUsd: null
     };
+  });
+  return out;
+}
 
-    // ====== Helpers ======
-    // --- Falling GIFs Config ---
-    // Place these files in /gifs/ (or adjust paths below)
-    const GIFS = [
-      'IMG_20251004_201500_343.gif',
-      'IMG_20251004_201506_564.gif',
-      'IMG_20251004_202045_351.gif',
-      'IMG_20251004_202056_061.gif',
-      'IMG_20251004_202104_380.gif',
-      'IMG_20251004_202124_245.gif',
-      'IMG_20251004_202153_888.gif'
-    ];
-    const RAIN_SETTINGS = {
-      maxDrops: 22,      // simultaneous GIFs
-      minSize: 48,       // px
-      maxSize: 120,      // px
-      minDur: 10,        // seconds per fall
-      maxDur: 20,        // seconds per fall
-      spawnEvery: 600    // ms between spawns
-    };
+/** Get USD price for a TON jetton via GeckoTerminal token endpoint */
+async function getJettonPriceUSD(jettonAddress){
+  // Docs-style endpoint (no key): https://api.geckoterminal.com/api/v2/networks/ton/tokens/{address}
+  // Returns attributes.price_usd if known
+  const url = `https://api.geckoterminal.com/api/v2/networks/ton/tokens/${encodeURIComponent(jettonAddress)}?include=top_pools`;
+  const r = await fetch(url, {headers:{ "accept":"application/json" }});
+  if (!r.ok) return null;
+  const j = await r.json();
+  const price = j?.data?.attributes?.price_usd;
+  return price ? Number(price) : null;
+}
 
-    /* short() moved above – duplicated definition removed */
+/** Get USD price for native TON from CoinGecko (fallback if needed) */
+async function getTonPriceUSD(){
+  // Coingecko simple price; if it ever rate-limits, you can swap in GeckoTerminal network stats or another source.
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd`;
+  const r = await fetch(url);
+  if (!r.ok) return null;
+  const j = await r.json();
+  return Number(j?.["the-open-network"]?.usd ?? null);
+}
 
-    // GIF Rain helpers
-    function rand(min,max){ return Math.random()*(max-min)+min; }
-    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
-    function spawnDrop(){
-      const wrap = document.querySelector('.gif-rain');
-      if(!wrap) return;
-      const drop = document.createElement('img');
-      drop.className = 'gif-drop';
-      drop.src = pick(GIFS);
-      const size = rand(RAIN_SETTINGS.minSize, RAIN_SETTINGS.maxSize);
-      const xvw = rand(-5, 100); // start anywhere including slightly off-screen
-      drop.style.width = size + 'px';
-      drop.style.left = xvw + 'vw';
-      drop.style.setProperty('--r', `${rand(-25,25)}deg`);
-      const dur = rand(RAIN_SETTINGS.minDur, RAIN_SETTINGS.maxDur);
-      drop.style.animation = `fallY ${dur}s linear forwards`;
-      drop.addEventListener('animationend', ()=> drop.remove());
-      wrap.appendChild(drop);
-    }
-    function startRain(){
-      const wrap = document.querySelector('.gif-rain');
-      if(!wrap) return;
-      // warm-up a few
-      for(let i=0; i<Math.min(8, RAIN_SETTINGS.maxDrops); i++) setTimeout(spawnDrop, i*120);
-      let interval = setInterval(()=>{
-        const active = wrap.querySelectorAll('.gif-drop').length;
-        if(active < RAIN_SETTINGS.maxDrops) spawnDrop();
-      }, RAIN_SETTINGS.spawnEvery);
-      document.addEventListener('visibilitychange', ()=>{
-        if(document.hidden){ clearInterval(interval); }
-        else{ interval = setInterval(()=>{
-          const active = wrap.querySelectorAll('.gif-drop').length;
-          if(active < RAIN_SETTINGS.maxDrops) spawnDrop();
-        }, RAIN_SETTINGS.spawnEvery); }
-      });
-    }
-    const short = (addr) => addr && addr.length > 12 ? `${addr.slice(0,6)}…${addr.slice(-6)}` : addr;
+/** ==== Renderers ==== */
 
-    // Init contract box
-    const mintFullEl = document.getElementById('mintFull');
-    const mintShortEl = document.getElementById('mintShort');
-    const copyBtn = document.getElementById('copyBtn');
-    mintFullEl.textContent = CONTRACT_MINT;
-    mintShortEl.textContent = short(CONTRACT_MINT);
+function renderJettons(rows){
+  if (!rows || rows.length===0){
+    jetBody.innerHTML = `<tr><td colspan="4" class="muted">No jettons found for this wallet.</td></tr>`;
+    return;
+  }
+  const html = rows.map(t=>{
+    const img = t.image ? `<img src="${t.image}" alt="" style="width:18px;height:18px;border-radius:50%;vertical-align:-4px;margin-right:6px">` : "";
+    const priceTxt = (t.priceUsd==null ? `<span class="muted">—</span>` : `$${fmt(t.priceUsd, 6)}`);
+    const valTxt = (t.valueUsd==null ? `<span class="muted">—</span>` : `$${fmt(t.valueUsd, 2)}`);
+    return `<tr data-priced="${t.priceUsd!=null}" data-nonzero="${t.balance>0}">
+      <td>${img}<span class="mono" title="${t.address}">${t.symbol}</span> <span class="muted">· ${t.name}</span></td>
+      <td class="right mono" title="${t.rawBalance} raw">${fmt(t.balance, 6)}</td>
+      <td class="right">${priceTxt}</td>
+      <td class="right">${valTxt}</td>
+    </tr>`;
+  }).join("");
+  jetBody.innerHTML = html;
+  applyFilter();
+}
 
-    copyBtn.addEventListener('click', async () => {
-      try{
-        await navigator.clipboard.writeText(CONTRACT_MINT);
-        copyBtn.textContent = 'Copied!';
-        setTimeout(()=>copyBtn.textContent='Copy', 1400);
-      }catch(e){
-        alert('Copy failed — long‑press to select and copy.');
+function applyFilter(){
+  const mode = filterSel.value;
+  [...jetBody.querySelectorAll("tr")].forEach(tr=>{
+    let show = true;
+    const priced = tr.getAttribute("data-priced")==="true";
+    const nonzero = tr.getAttribute("data-nonzero")==="true";
+    if (mode==="priced" && !priced) show=false;
+    if (mode==="unpriced" && priced) show=false;
+    if (mode==="nonzero" && !nonzero) show=false;
+    tr.style.display = show ? "" : "none";
+  });
+}
+
+/** ==== Controller ==== */
+
+async function loadAll(){
+  const address = addrInput.value.trim();
+  if (!address || address.length < 10){
+    notify("Enter a valid TON wallet address.", "warn");
+    return;
+  }
+  notify("Loading balances…");
+
+  // Reset UI
+  totalUsdEl.textContent = "$0.00";
+  totalBreakdownEl.textContent = "TON $0.00 • Jettons $0.00";
+  tonBalEl.textContent = "0";
+  tonUsdSubEl.textContent = "$0.00 (at $—/TON)";
+  jetCountEl.textContent = "0";
+  jetBody.innerHTML = `<tr><td colspan="4" class="muted">Fetching jettons…</td></tr>`;
+
+  try{
+    // 1) TON balance
+    const [tonBal, tonPriceUsd] = await Promise.all([
+      getTonBalance(address),
+      getTonPriceUSD()
+    ]);
+    const tonVal = (tonPriceUsd ? tonBal * tonPriceUsd : 0);
+
+    tonBalEl.textContent = fmt(tonBal, 6);
+    tonUsdSubEl.textContent = `$${fmt(tonVal,2)} (at $${fmt(tonPriceUsd, 4)}/TON)`;
+
+    // 2) Jettons
+    const jets = await getJettonBalances(address);
+    jetCountEl.textContent = String(jets.length);
+
+    // Fetch jetton prices sequentially with a small delay to be kind to APIs
+    let pricedCount = 0;
+    for (let i=0; i<jets.length; i++){
+      const j = jets[i];
+      // skip zero balances to save calls
+      if (j.balance <= 0){
+        j.priceUsd = null;
+        j.valueUsd = null;
+      }else{
+        const p = await getJettonPriceUSD(j.address);
+        j.priceUsd = (p && isFinite(p)) ? p : null;
+        j.valueUsd = (j.priceUsd!=null) ? (j.balance * j.priceUsd) : null;
+        if (j.priceUsd!=null) pricedCount++;
+        await sleep(PRICE_FETCH_DELAY_MS);
       }
-    });
-
-    // Wire links
-    const buyBtn = document.getElementById('buyBtn');
-    const chartBtn = document.getElementById('chartBtn');
-    const pumpBtn = document.getElementById('pumpBtn');
-    const tgLink = document.getElementById('tgLink');
-    const twLink = document.getElementById('twLink');
-
-    if(CONTRACT_MINT && !CONTRACT_MINT.startsWith('ENTER_')){
-      buyBtn.href = LINKS.jupiter;
-      chartBtn.href = LINKS.dexscreener;
-      pumpBtn.href = LINKS.pumpfun;
-    } else {
-      buyBtn.href = '#';
-      chartBtn.href = '#';
-      pumpBtn.href = '#';
+      // Optionally render progressively every few items
+      if (i===0 || i%5===0 || i===jets.length-1){
+        renderJettons(jets);
+        notify(`Pricing jettons… ${i+1}/${jets.length}`);
+      }
     }
-    tgLink.href = LINKS.telegram; twLink.href = LINKS.twitter;
 
-    // Start GIF rain after DOM is ready
-    window.addEventListener('DOMContentLoaded', startRain);
+    // 3) Totals
+    const jetUsd = jets.reduce((s,x)=> s + (x.valueUsd || 0), 0);
+    const total = tonVal + jetUsd;
 
-    // Footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Robust GIF loading with fallbacks (so tiles don't disappear if path differs)
-    document.querySelectorAll('img.gif').forEach(img =>{
-      const orig = img.getAttribute('src') || '';
-      const fname = orig.split('/').pop();
-      const base = location.pathname.replace(/[^/]+$/, '');
-      const candidates = Array.from(new Set([
-        orig,
-        `./${fname}`,
-        `gifs/${fname}`,
-        `${base}${fname}`,
-        `${base}gifs/${fname}`
-      ]));
-      let i = 0;
-      img.addEventListener('error', ()=>{
-        i++;
-        if(i < candidates.length){ img.src = candidates[i]; }
-        else{
-          img.style.opacity = .35; // keep a visible placeholder
-          img.alt += ' (file not found)';
-        }
-      }, { once:false });
-    });
-  </script></body>
+    totalUsdEl.textContent = `$${fmt(total,2)}`;
+    totalBreakdownEl.textContent = `TON $${fmt(tonVal,2)} • Jettons $${fmt(jetUsd,2)} (${pricedCount}/${jets.length} priced)`;
+    notify("Done ✔");
+  }catch(err){
+    console.error(err);
+    notify("Error loading data. Check address and try again.", "bad");
+    jetBody.innerHTML = `<tr><td colspan="4" class="warn">Failed to fetch balances.</td></tr>`;
+  }
+}
+</script>
+</body>
 </html>

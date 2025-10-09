@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TonFi Treasury Tracker</title>
-<meta name="description" content="TonFi — simple TON wallet & jetton tracker with live USD pricing." />
+<meta name="description" content="TonFi — simple TON wallet & jetton tracker with live USD pricing from STON.fi & DeDust." />
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><text y='.9em' font-size='90'>💎</text></svg>">
 
 <style>
@@ -117,7 +117,7 @@
         <div class="kpi">
           <div class="label">Jettons Tracked</div>
           <div class="value" id="jetCount">0</div>
-          <div class="sub">Prices via DexScreener → GeckoTerminal</div>
+          <div class="sub">Prices via STON.fi / DeDust (fallback: DexScreener, GeckoTerminal)</div>
         </div>
       </div>
     </div>
@@ -152,7 +152,7 @@
     </div>
 
     <div class="footer">
-      <div class="muted">Data from TonAPI, DexScreener, GeckoTerminal. Prices may be missing for new/illiquid tokens.</div>
+      <div class="muted">Data from TonAPI, STON.fi, DeDust, DexScreener, GeckoTerminal. Prices may be missing for new/illiquid tokens.</div>
       <div class="muted">© TonFi</div>
     </div>
   </div>
@@ -177,6 +177,7 @@ const fmt = (n, d=2) => {
   return v.toLocaleString(undefined,{minimumFractionDigits: (v>0 && v<1 ? Math.min(4,d+2):0), maximumFractionDigits:d});
 };
 const sleep = (ms)=> new Promise(r=>setTimeout(r,ms));
+const sym = s => (s||"").toUpperCase();
 
 /** UI elements */
 const addrInput = $("addr");
@@ -245,33 +246,7 @@ async function safeFetchJSON(url, opts={}){
   }
 }
 
-/** Pick the "best" pair from DexScreener by highest USD liquidity */
-function pickBestDexPair(pairs){
-  if (!Array.isArray(pairs) || pairs.length === 0) return null;
-  const ranked = pairs
-    .map((p,i)=>({ i, liq: Number(p?.liquidity?.usd ?? 0), price: p?.priceUsd ? Number(p.priceUsd) : null }))
-    .sort((a,b)=> b.liq - a.liq);
-  const top = ranked[0];
-  return (top && isFinite(top.price)) ? pairs[top.i] : null;
-}
-
-/** Primary: DexScreener; Fallback: GeckoTerminal */
-async function getJettonPriceUSD(jettonAddress){
-  // DexScreener tokens endpoint
-  const dsUrl = `https://api.dexscreener.com/latest/dex/tokens/${encodeURIComponent(jettonAddress)}`;
-  const ds = await safeFetchJSON(dsUrl, { headers:{ "accept":"application/json" }});
-  if (ds?.pairs?.length){
-    const best = pickBestDexPair(ds.pairs);
-    if (best?.priceUsd && isFinite(best.priceUsd)) return Number(best.priceUsd);
-  }
-  // GeckoTerminal fallback
-  const gtUrl = `https://api.geckoterminal.com/api/v2/networks/ton/tokens/${encodeURIComponent(jettonAddress)}?include=top_pools`;
-  const gt = await safeFetchJSON(gtUrl, { headers:{ "accept":"application/json" }});
-  const price = gt?.data?.attributes?.price_usd;
-  return (price && isFinite(price)) ? Number(price) : null;
-}
-
-/** TON native price (CoinGecko Simple Price) */
+/** TON price in USD (CoinGecko Simple Price) */
 async function getTonPriceUSD(){
   const cgUrl = `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd`;
   const j = await safeFetchJSON(cgUrl);
@@ -311,6 +286,191 @@ async function getJettonBalances(address){
     };
   });
   return out;
+}
+
+/** ============================
+ *  PRICING (STON.fi / DeDust)
+ *  ============================ */
+
+/** Generic ranker: pick item with highest USD liquidity/TVL */
+function bestByUsdLiquidity(items, getUsd){
+  if (!Array.isArray(items) || !items.length) return null;
+  return items
+    .map((x,i)=>({i,usd: Number(getUsd(x) ?? 0)}))
+    .sort((a,b)=> b.usd - a.usd)[0];
+}
+
+/** Extract convenient shape from a STON.fi pool object */
+function parseStonPool(p){
+  return {
+    t0: {symbol: p?.token0?.symbol || p?.token0?.name || "", addr:(p?.token0?.address||""), decimals: Number(p?.token0?.decimals ?? 9)},
+    t1: {symbol: p?.token1?.symbol || p?.token1?.name || "", addr:(p?.token1?.address||""), decimals: Number(p?.token1?.decimals ?? 9)},
+    r0: Number(p?.reserve0 ?? p?.reserves0 ?? 0),
+    r1: Number(p?.reserve1 ?? p?.reserves1 ?? 0),
+    tvl: Number(p?.tvl_usd ?? p?.tvlUSD ?? p?.liquidity_usd ?? p?.liquidityUSD ?? 0)
+  };
+}
+
+/** Extract convenient shape from a DeDust pool object */
+function parseDeDustPool(p){
+  return {
+    t0: {symbol: p?.token0?.symbol || p?.token0?.name || "", addr:(p?.token0?.address||""), decimals: Number(p?.token0?.decimals ?? 9)},
+    t1: {symbol: p?.token1?.symbol || p?.token1?.name || "", addr:(p?.token1?.address||""), decimals: Number(p?.token1?.decimals ?? 9)},
+    r0: Number(p?.reserve0 ?? p?.reserves0 ?? 0),
+    r1: Number(p?.reserve1 ?? p?.reserves1 ?? 0),
+    tvl: Number(p?.tvl_usd ?? p?.tvlUSD ?? p?.liquidity_usd ?? p?.liquidityUSD ?? 0)
+  };
+}
+
+/** Compute token price in USD from a pool against TON or USDT */
+function priceFromPoolUSD(pool, jettonAddr, tonUsd){
+  const A = pool.t0, B = pool.t1;
+  const jet0 = (A.addr||"").toLowerCase() === (jettonAddr||"").toLowerCase();
+  const jet1 = (B.addr||"").toLowerCase() === (jettonAddr||"").toLowerCase();
+  if (!jet0 && !jet1) return null;
+
+  // normalized reserves
+  const r0 = pool.r0 / (10 ** Number(A.decimals||9));
+  const r1 = pool.r1 / (10 ** Number(B.decimals||9));
+
+  const s0 = sym(A.symbol), s1 = sym(B.symbol);
+  const otherIsTON  = s0.includes("TON") || s1.includes("TON");
+  const otherIsUSDT = s0.includes("USDT") || s1.includes("USDT") || s0.includes("USD₮") || s1.includes("USD₮");
+
+  // price in "other token"
+  let priceInOther = null;
+  if (jet0) priceInOther = r1 / r0; else if (jet1) priceInOther = r0 / r1;
+  if (priceInOther==null || !isFinite(priceInOther) || priceInOther<=0) return null;
+
+  if (otherIsTON) {
+    if (!tonUsd) return null;
+    return priceInOther * tonUsd;
+  }
+  if (otherIsUSDT) {
+    // assume 1 USDT ≈ $1
+    return priceInOther * 1.0;
+  }
+  return null; // unsupported pair here (could extend to USDC, etc.)
+}
+
+/** --- STON.fi direct pricing --- */
+async function getPriceFromStonfi(jettonAddr, tokenDecimals){
+  try{
+    // Attempt #1: /v1/pools/by-token
+    const byTokenURL = `https://api.ston.fi/v1/pools/by-token?address=${encodeURIComponent(jettonAddr)}`;
+    let res = await safeFetchJSON(byTokenURL, { headers:{ "accept":"application/json" }});
+
+    // Attempt #2: fallback variant some gateways expose
+    if (!res || (!Array.isArray(res?.pools) && !Array.isArray(res))) {
+      const altURL = `https://api.ston.fi/v1/pools?limit=200&jetton_address=${encodeURIComponent(jettonAddr)}`;
+      res = await safeFetchJSON(altURL, { headers:{ "accept":"application/json" }});
+    }
+    const poolsRaw = Array.isArray(res?.pools) ? res.pools : Array.isArray(res) ? res : [];
+    if (!poolsRaw.length) return null;
+
+    const pools = poolsRaw.map(parseStonPool);
+
+    // Prefer TON or USDT pools
+    const filtered = pools.filter(p=>{
+      const s0 = sym(p.t0.symbol), s1 = sym(p.t1.symbol);
+      return s0.includes("TON") || s1.includes("TON") || s0.includes("USDT") || s1.includes("USDT");
+    });
+    const usePools = filtered.length ? filtered : pools;
+
+    // Choose best by TVL (or estimate)
+    const tonUsd = await getTonPriceUSD();
+    const pick = bestByUsdLiquidity(usePools, (p)=>{
+      if (p.tvl) return p.tvl;
+      // cheap estimate: if TON is in pool, use TON side * tonUsd * 2
+      const s0 = sym(p.t0.symbol), s1 = sym(p.t1.symbol);
+      if (s0.includes("TON")) return (p.r0/(10**9)) * (tonUsd||0) * 2;
+      if (s1.includes("TON")) return (p.r1/(10**9)) * (tonUsd||0) * 2;
+      return 0;
+    });
+    if (!pick) return null;
+    const best = usePools[pick.i];
+
+    return priceFromPoolUSD(best, jettonAddr, await getTonPriceUSD());
+  }catch{ return null; }
+}
+
+/** --- DeDust direct pricing --- */
+async function getPriceFromDeDust(jettonAddr, tokenDecimals){
+  try{
+    // Attempt #1: /v2/pools/by-token
+    const byTokenURL = `https://api.dedust.io/v2/pools/by-token?address=${encodeURIComponent(jettonAddr)}`;
+    let res = await safeFetchJSON(byTokenURL, { headers:{ "accept":"application/json" }});
+
+    // Attempt #2: broader list
+    if (!res || (!Array.isArray(res?.pools) && !Array.isArray(res))) {
+      const allURL = `https://api.dedust.io/v2/pools?limit=200&jetton_address=${encodeURIComponent(jettonAddr)}`;
+      res = await safeFetchJSON(allURL, { headers:{ "accept":"application/json" }});
+    }
+    const poolsRaw = Array.isArray(res?.pools) ? res.pools : Array.isArray(res) ? res : [];
+    if (!poolsRaw.length) return null;
+
+    const pools = poolsRaw.map(parseDeDustPool);
+
+    // Prefer TON or USDT pools
+    const filtered = pools.filter(p=>{
+      const s0 = sym(p.t0.symbol), s1 = sym(p.t1.symbol);
+      return s0.includes("TON") || s1.includes("TON") || s0.includes("USDT") || s1.includes("USDT");
+    });
+    const usePools = filtered.length ? filtered : pools;
+
+    // Choose best by TVL
+    const tonUsd = await getTonPriceUSD();
+    const pick = bestByUsdLiquidity(usePools, (p)=>{
+      if (p.tvl) return p.tvl;
+      const s0 = sym(p.t0.symbol), s1 = sym(p.t1.symbol);
+      if (s0.includes("TON")) return (p.r0/(10**9)) * (tonUsd||0) * 2;
+      if (s1.includes("TON")) return (p.r1/(10**9)) * (tonUsd||0) * 2;
+      return 0;
+    });
+    if (!pick) return null;
+    const best = usePools[pick.i];
+
+    return priceFromPoolUSD(best, jettonAddr, await getTonPriceUSD());
+  }catch{ return null; }
+}
+
+/** --- DexScreener & GeckoTerminal fallbacks --- */
+async function getPriceFromDexScreener(jettonAddress){
+  const dsUrl = `https://api.dexscreener.com/latest/dex/tokens/${encodeURIComponent(jettonAddress)}`;
+  const ds = await safeFetchJSON(dsUrl, { headers:{ "accept":"application/json" }});
+  if (ds?.pairs?.length){
+    const best = ds.pairs
+      .map((p,i)=>({i,usd:Number(p?.liquidity?.usd ?? 0)}))
+      .sort((a,b)=> b.usd - a.usd)[0];
+    if (best){
+      const p = ds.pairs[best.i];
+      if (p?.priceUsd && isFinite(p.priceUsd)) return Number(p.priceUsd);
+    }
+  }
+  return null;
+}
+async function getPriceFromGeckoTerminal(jettonAddress){
+  const gtUrl = `https://api.geckoterminal.com/api/v2/networks/ton/tokens/${encodeURIComponent(jettonAddress)}?include=top_pools`;
+  const gt = await safeFetchJSON(gtUrl, { headers:{ "accept":"application/json" }});
+  const price = gt?.data?.attributes?.price_usd;
+  return (price && isFinite(price)) ? Number(price) : null;
+}
+
+/** Main: multi-source price resolver */
+async function getJettonPriceUSD(jettonAddress, tokenDecimals=9){
+  const ston = await getPriceFromStonfi(jettonAddress, tokenDecimals);
+  if (ston != null) return ston;
+
+  const dedust = await getPriceFromDeDust(jettonAddress, tokenDecimals);
+  if (dedust != null) return dedust;
+
+  const ds = await getPriceFromDexScreener(jettonAddress);
+  if (ds != null) return ds;
+
+  const gt = await getPriceFromGeckoTerminal(jettonAddress);
+  if (gt != null) return gt;
+
+  return null;
 }
 
 /** ==== Renderers ==== */
@@ -389,7 +549,7 @@ async function loadAll(){
         j.priceUsd = null;
         j.valueUsd = null;
       }else{
-        const p = await getJettonPriceUSD(j.address);
+        const p = await getJettonPriceUSD(j.address, j.decimals); // pass decimals for accuracy
         j.priceUsd = (p && isFinite(p)) ? p : null;
         j.valueUsd = (j.priceUsd!=null) ? (j.balance * j.priceUsd) : null;
         if (j.priceUsd!=null) pricedCount++;

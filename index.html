@@ -3,71 +3,79 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TON Treasury Tracker</title>
-<meta name="description" content="Simple TON wallet & treasury tracker for TON + Jettons." />
+<title>TonFi Treasury Tracker</title>
+<meta name="description" content="TonFi — simple TON wallet & jetton tracker with live USD pricing." />
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><text y='.9em' font-size='90'>💎</text></svg>">
 
 <style>
   :root{
-    --bg:#0b1220; --card:#121a2b; --muted:#8aa0c4; --text:#e6eeff; --accent:#3ea6ff; --good:#00d084; --warn:#ffaa00; --bad:#ff5470; --border:rgba(255,255,255,.08);
+    --bg:#071023; --card:#0c172f; --muted:#8aa0c4; --text:#e8f1ff; --accent:#2fb9ff; --accent2:#14b8ff; --good:#00d084; --warn:#ffb020; --bad:#ff5470; --border:rgba(255,255,255,.08);
+    --glass: rgba(255,255,255,.06);
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    color:var(--text); background: radial-gradient(1000px 600px at 20% -10%, #19305666, transparent 60%), radial-gradient(800px 500px at 100% 0%, #0e254566, transparent 60%), var(--bg);
+    margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+    color:var(--text);
+    background:
+      radial-gradient(1000px 600px at 20% -10%, #183d7a55, transparent 60%),
+      radial-gradient(800px 500px at 100% 0%, #0e2e5e66, transparent 60%),
+      var(--bg);
   }
-  .wrap{max-width:1100px; margin:0 auto; padding:28px 16px 56px}
+  .wrap{max-width:1120px; margin:0 auto; padding:28px 16px 56px}
   header{display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:18px}
-  h1{font-size:22px; font-weight:800; margin:0; letter-spacing:.2px}
+  .brand{display:flex; align-items:center; gap:12px}
+  .logo{width:32px; height:32px; border-radius:50%; background:linear-gradient(180deg,#1e90ff,#1266d1)}
+  .brand h1{font-size:22px; font-weight:800; margin:0; letter-spacing:.2px}
   .tag{padding:4px 10px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:12px}
-
   .panel{background:var(--card); border:1px solid var(--border); border-radius:18px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
   .grid{display:grid; gap:12px}
   @media(min-width:900px){ .grid-3{grid-template-columns: 1.2fr .8fr 1fr} }
   @media(min-width:900px){ .grid-2{grid-template-columns: 1fr 1fr} }
-
   .controls{display:flex; gap:10px; flex-wrap:wrap}
   input[type="text"]{
-    flex:1 1 280px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:#0f1627; color:var(--text);
+    flex:1 1 320px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:#0f1b35; color:var(--text);
     outline:none; transition:.2s border;
   }
   input[type="text"]::placeholder{color:#6f86ad}
   button{
-    padding:12px 16px; border-radius:12px; border:1px solid var(--border); background:#0f1627; color:var(--text); cursor:pointer; font-weight:700;
+    padding:12px 16px; border-radius:12px; border:1px solid var(--border); background:#0f1b35; color:var(--text); cursor:pointer; font-weight:700;
   }
-  button.primary{background:linear-gradient(180deg, #1c7ed6, #1864ab); border:none}
+  button.primary{
+    background:linear-gradient(180deg, var(--accent), var(--accent2)); border:none; color:#001326;
+    box-shadow:0 8px 22px rgba(47,185,255,.35);
+  }
   button.ghost{background:transparent}
   .note{color:var(--muted); font-size:12px}
-
-  .kpi{display:flex; flex-direction:column; gap:6px; padding:14px; border:1px dashed var(--border); border-radius:14px}
+  .kpi{display:flex; flex-direction:column; gap:6px; padding:14px; border:1px dashed var(--border); border-radius:14px; background:linear-gradient(0deg, transparent, var(--glass))}
   .kpi .label{color:var(--muted); font-size:12px}
   .kpi .value{font-size:22px; font-weight:800}
   .kpi .sub{color:var(--muted); font-size:12px}
-
   .table{width:100%; border-collapse:collapse; margin-top:6px; font-size:14px}
   .table th, .table td{padding:10px 8px; border-bottom:1px solid var(--border)}
   .table th{color:#93add1; font-weight:700; text-align:left; font-size:12px}
   .right{text-align:right}
   .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-
-  .pill{padding:2px 8px; border-radius:999px; background:#0d1a2b; border:1px solid var(--border); color:#a8c2ea; font-size:12px; display:inline-flex; align-items:center; gap:6px}
+  .pill{padding:2px 8px; border-radius:999px; background:#0d1f3b; border:1px solid var(--border); color:#a8c2ea; font-size:12px; display:inline-flex; align-items:center; gap:6px}
   .status{display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px}
-
   .footer{margin-top:18px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
   a{color:var(--accent); text-decoration:none}
   .muted{color:var(--muted)}
   .hidden{display:none}
   .warn{color:var(--warn)}
   .good{color:var(--good)}
+  .chip{display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:#0e1d37; color:#a8c2ea; font-size:12px}
+  .chips{display:flex; gap:8px; flex-wrap:wrap}
 </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div style="display:flex; align-items:center; gap:10px">
-        <h1>TON Treasury Tracker</h1>
-        <span class="tag">alpha • client-side only</span>
+      <div class="brand">
+        <img src="tonfi-logo.png" alt="TonFi" class="logo" onerror="this.style.display='none'; document.getElementById('brandText').style.display='block'">
+        <div id="brandText" style="display:none; font-weight:800; font-size:18px; letter-spacing:.2px">TonFi</div>
+        <h1>Treasurey Tracker</h1>
+        <span class="tag">alpha • client-side</span>
       </div>
       <div class="status" id="status"><span>Ready.</span></div>
     </header>
@@ -80,7 +88,13 @@
         <button class="primary" id="loadBtn">Load</button>
       </div>
       <div class="note" style="margin-top:8px">
-        Tip: Save this page and deploy on Vercel. You can also set <span class="mono">DEFAULT_ADDRESS</span> inside the code to prefill your treasury wallet.
+        Tip: Set <span class="mono">DEFAULT_ADDRESS</span> in the code or open with <span class="mono">?addr=EQxxxx</span>. Last address auto-saves.
+      </div>
+      <div class="chips" style="margin-top:10px">
+        <!-- Preset quick buttons: edit these to your wallets -->
+        <button class="chip" data-addr="">Treasury</button>
+        <button class="chip" data-addr="">Marketing</button>
+        <button class="chip" data-addr="">Ops</button>
       </div>
     </div>
 
@@ -103,7 +117,7 @@
         <div class="kpi">
           <div class="label">Jettons Tracked</div>
           <div class="value" id="jetCount">0</div>
-          <div class="sub">Priced via GeckoTerminal when available</div>
+          <div class="sub">Prices via DexScreener → GeckoTerminal</div>
         </div>
       </div>
     </div>
@@ -111,13 +125,15 @@
     <div class="panel" style="margin-top:12px">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap">
         <h2 style="font-size:16px; margin:0">Jettons</h2>
-        <div class="pill"><span>Filter:</span>
-          <select id="filterSel" style="background:transparent; color:#a8c2ea; border:none; outline:none">
-            <option value="all">All</option>
-            <option value="priced">With price</option>
-            <option value="unpriced">No price</option>
-            <option value="nonzero">Non-zero balance</option>
-          </select>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+          <div class="pill"><span>Filter:</span>
+            <select id="filterSel" style="background:transparent; color:#a8c2ea; border:none; outline:none">
+              <option value="all">All</option>
+              <option value="priced">With price</option>
+              <option value="unpriced">No price</option>
+              <option value="nonzero">Non-zero balance</option>
+            </select>
+          </div>
         </div>
       </div>
       <table class="table" id="jetTable">
@@ -136,8 +152,8 @@
     </div>
 
     <div class="footer">
-      <div class="muted">Data from TonAPI & GeckoTerminal. Prices can be missing for illiquid/new tokens.</div>
-      <div class="muted">Built with ❤️ for TON.</div>
+      <div class="muted">Data from TonAPI, DexScreener, GeckoTerminal. Prices may be missing for new/illiquid tokens.</div>
+      <div class="muted">© TonFi</div>
     </div>
   </div>
 
@@ -145,7 +161,7 @@
 /** ================================
  *  BASIC SETTINGS (edit these)
  *  ================================ */
-const DEFAULT_ADDRESS = ""; // ← put your treasury wallet here to prefill (e.g. "EQBDc5nG...")
+const DEFAULT_ADDRESS = ""; // ← put your treasury wallet here (e.g., "EQBDc5nG...")
 const TONAPI_BASE = "https://tonapi.io";
 const TON_DECIMALS = 9;
 
@@ -173,27 +189,95 @@ const jetCountEl = $("jetCount");
 const jetBody = $("jetBody");
 const filterSel = $("filterSel");
 
-if (DEFAULT_ADDRESS) addrInput.value = DEFAULT_ADDRESS;
-
 /** Event wiring */
+document.querySelectorAll(".chip").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const a = btn.getAttribute("data-addr");
+    if (a){ addrInput.value = a; saveLastAddr(a); loadAll(); }
+  });
+});
 $("pasteBtn").onclick = async ()=>{
   try{
     const t = await navigator.clipboard.readText();
-    if (t) addrInput.value = t.trim();
+    if (t) { addrInput.value = t.trim(); saveLastAddr(t.trim()); }
   }catch(e){ notify("Clipboard blocked by browser.", "warn"); }
 };
 $("exampleBtn").onclick = ()=>{
-  addrInput.value = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"; // harmless dummy; replace with a real address
+  const d = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"; // dummy; replace with real wallet for demo
+  addrInput.value = d; saveLastAddr(d);
 };
-$("loadBtn").onclick = ()=> loadAll();
+$("loadBtn").onclick = ()=> { const a = addrInput.value.trim(); saveLastAddr(a); loadAll(); };
 filterSel.onchange = ()=> applyFilter();
 
 /** Notify helper */
-function notify(msg, level=""){
-  statusEl.innerHTML = `<span class="${level}">${msg}</span>`;
+function notify(msg, level=""){ statusEl.innerHTML = `<span class="${level}">${msg}</span>`; }
+
+/** Last address persistence */
+function saveLastAddr(a){ try{ if(a && a.length>10) localStorage.setItem("tonfi_last_addr", a); }catch{} }
+function getSavedAddr(){ try{ return localStorage.getItem("tonfi_last_addr") || ""; }catch{ return ""; } }
+
+/** Read ?addr= from URL */
+function getAddrFromQuery(){
+  try{
+    const u = new URL(window.location.href);
+    return (u.searchParams.get("addr")||"").trim();
+  }catch{ return ""; }
 }
 
 /** ==== API fetchers ==== */
+
+/** Try fetch with optional simple CORS fallback */
+async function safeFetchJSON(url, opts={}){
+  try {
+    const r = await fetch(url, opts);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e){
+    // tiny CORS fallback proxy — avoid heavy use
+    try {
+      const proxied = `https://cors.isomorphic-git.org/${url}`;
+      const r2 = await fetch(proxied, opts);
+      if (!r2.ok) return null;
+      return await r2.json();
+    } catch(e2){
+      return null;
+    }
+  }
+}
+
+/** Pick the "best" pair from DexScreener by highest USD liquidity */
+function pickBestDexPair(pairs){
+  if (!Array.isArray(pairs) || pairs.length === 0) return null;
+  const ranked = pairs
+    .map((p,i)=>({ i, liq: Number(p?.liquidity?.usd ?? 0), price: p?.priceUsd ? Number(p.priceUsd) : null }))
+    .sort((a,b)=> b.liq - a.liq);
+  const top = ranked[0];
+  return (top && isFinite(top.price)) ? pairs[top.i] : null;
+}
+
+/** Primary: DexScreener; Fallback: GeckoTerminal */
+async function getJettonPriceUSD(jettonAddress){
+  // DexScreener tokens endpoint
+  const dsUrl = `https://api.dexscreener.com/latest/dex/tokens/${encodeURIComponent(jettonAddress)}`;
+  const ds = await safeFetchJSON(dsUrl, { headers:{ "accept":"application/json" }});
+  if (ds?.pairs?.length){
+    const best = pickBestDexPair(ds.pairs);
+    if (best?.priceUsd && isFinite(best.priceUsd)) return Number(best.priceUsd);
+  }
+  // GeckoTerminal fallback
+  const gtUrl = `https://api.geckoterminal.com/api/v2/networks/ton/tokens/${encodeURIComponent(jettonAddress)}?include=top_pools`;
+  const gt = await safeFetchJSON(gtUrl, { headers:{ "accept":"application/json" }});
+  const price = gt?.data?.attributes?.price_usd;
+  return (price && isFinite(price)) ? Number(price) : null;
+}
+
+/** TON native price (CoinGecko Simple Price) */
+async function getTonPriceUSD(){
+  const cgUrl = `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd`;
+  const j = await safeFetchJSON(cgUrl);
+  const v = j?.["the-open-network"]?.usd;
+  return (v && isFinite(v)) ? Number(v) : null;
+}
 
 /** Get TON (native) balance for account (in TON) */
 async function getTonBalance(address){
@@ -211,8 +295,6 @@ async function getJettonBalances(address){
   const r = await fetch(url);
   if (!r.ok) throw new Error(`TonAPI jettons: ${r.status}`);
   const j = await r.json();
-  // Normalize
-  // TonAPI returns: balances: [{balance, jetton:{address, name, symbol, decimals, image, ...}}]
   const out = (j.balances || []).map(x=>{
     const d = x.jetton || {};
     const dec = Number(d.decimals ?? 9);
@@ -229,28 +311,6 @@ async function getJettonBalances(address){
     };
   });
   return out;
-}
-
-/** Get USD price for a TON jetton via GeckoTerminal token endpoint */
-async function getJettonPriceUSD(jettonAddress){
-  // Docs-style endpoint (no key): https://api.geckoterminal.com/api/v2/networks/ton/tokens/{address}
-  // Returns attributes.price_usd if known
-  const url = `https://api.geckoterminal.com/api/v2/networks/ton/tokens/${encodeURIComponent(jettonAddress)}?include=top_pools`;
-  const r = await fetch(url, {headers:{ "accept":"application/json" }});
-  if (!r.ok) return null;
-  const j = await r.json();
-  const price = j?.data?.attributes?.price_usd;
-  return price ? Number(price) : null;
-}
-
-/** Get USD price for native TON from CoinGecko (fallback if needed) */
-async function getTonPriceUSD(){
-  // Coingecko simple price; if it ever rate-limits, you can swap in GeckoTerminal network stats or another source.
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd`;
-  const r = await fetch(url);
-  if (!r.ok) return null;
-  const j = await r.json();
-  return Number(j?.["the-open-network"]?.usd ?? null);
 }
 
 /** ==== Renderers ==== */
@@ -307,7 +367,7 @@ async function loadAll(){
   jetBody.innerHTML = `<tr><td colspan="4" class="muted">Fetching jettons…</td></tr>`;
 
   try{
-    // 1) TON balance
+    // 1) TON balance + price
     const [tonBal, tonPriceUsd] = await Promise.all([
       getTonBalance(address),
       getTonPriceUSD()
@@ -325,7 +385,6 @@ async function loadAll(){
     let pricedCount = 0;
     for (let i=0; i<jets.length; i++){
       const j = jets[i];
-      // skip zero balances to save calls
       if (j.balance <= 0){
         j.priceUsd = null;
         j.valueUsd = null;
@@ -336,7 +395,6 @@ async function loadAll(){
         if (j.priceUsd!=null) pricedCount++;
         await sleep(PRICE_FETCH_DELAY_MS);
       }
-      // Optionally render progressively every few items
       if (i===0 || i%5===0 || i===jets.length-1){
         renderJettons(jets);
         notify(`Pricing jettons… ${i+1}/${jets.length}`);
@@ -356,6 +414,15 @@ async function loadAll(){
     jetBody.innerHTML = `<tr><td colspan="4" class="warn">Failed to fetch balances.</td></tr>`;
   }
 }
+
+/** ==== Autofill on load: DEFAULT / ?addr= / saved ==== */
+(function boot(){
+  const fromQuery = getAddrFromQuery();
+  const saved = getSavedAddr();
+  const initial = fromQuery || saved || DEFAULT_ADDRESS;
+  if (initial){ addrInput.value = initial; }
+  if (initial){ loadAll(); }
+})();
 </script>
 </body>
 </html>

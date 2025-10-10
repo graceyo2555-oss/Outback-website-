@@ -1,352 +1,409 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TonFi Ecosystem Index</title>
-  <meta name="description" content="Live TonFi ecosystem dashboard: price, market cap, volume, holders, and quick buy/chart links for TON meme‑fi partners." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0b1020; --card:#0e1530cc; --muted:#9fb2d7; --text:#e9f3ff; --tone:#0098ea; --tone2:#29a9ff; --danger:#ff5577; --ok:#2ecc71; --glass:rgba(255,255,255,.06);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:radial-gradient(1200px 800px at 10% -10%, #123, transparent),radial-gradient(1000px 600px at 100% 0%, #0a1226, transparent),var(--bg);color:var(--text)}
-    .wrap{max-width:1200px;margin:0 auto;padding:24px}
-    header{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:20px}
-    .brand{display:flex;gap:12px;align-items:center}
-    .brand img{width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 2px #0c2744,0 4px 16px #06101f}
-    h1{margin:0;font-size:22px;letter-spacing:.3px}
-    .sub{color:var(--muted);font-size:13px;margin-top:2px}
-    .controls{display:flex;gap:10px;flex-wrap:wrap}
-    .input, select, .btn{background:var(--glass);color:var(--text);border:1px solid #1d2b45;border-radius:12px;padding:10px 12px;font-size:14px;outline:none}
-    .btn{cursor:pointer;transition:.2s ease;border-color:#214a72;background:linear-gradient(180deg, #11233d, #0e1f37)}
-    .btn:hover{transform:translateY(-1px)}
-    .tag{font-size:12px;background:#0f1e36;border:1px solid #213455;padding:4px 8px;border-radius:999px;color:#cfe6ff}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-    .card{grid-column:span 12;background:linear-gradient(180deg, #0e1832, #0b1328);border:1px solid #1a2a49;border-radius:18px;padding:14px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-    @media(min-width:680px){.card{grid-column:span 6}}
-    @media(min-width:1024px){.card{grid-column:span 4}}
-    .row{display:flex;align-items:center;gap:12px}
-    .row.stretch{justify-content:space-between}
-    .token{display:flex;align-items:center;gap:10px}
-    .logo{width:40px;height:40px;border-radius:50%;background:#0a1a33;border:1px solid #214a72;display:grid;place-items:center;overflow:hidden}
-    .logo img{width:100%;height:100%;object-fit:cover}
-    .name{font-weight:700}
-    .sym{opacity:.8;font-size:12px;margin-left:6px}
-    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-    .metric{background:rgba(255,255,255,.03);border:1px solid #1a2a49;border-radius:12px;padding:10px}
-    .metric .label{color:#a9bfdf;font-size:11px}
-    .metric .val{font-size:16px;font-weight:700;margin-top:4px}
-    .chg.up{color:var(--ok)}
-    .chg.down{color:var(--danger)}
-    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .pill{padding:8px 10px;border-radius:12px;border:1px solid #214a72;text-decoration:none;color:#d8eeff;background:linear-gradient(180deg,#0f2340,#0b1d35);font-size:13px}
-    .pill:hover{filter:brightness(1.1)}
-    .small{font-size:12px;color:#9fb2d7;margin-top:10px}
-    .copy{cursor:pointer}
-    .empty{opacity:.8;text-align:center;padding:40px;border:1px dashed #213455;border-radius:16px}
-    footer{margin-top:26px;color:#89a6c8;font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .badge{font-size:11px;padding:6px 8px;border-radius:999px;border:1px solid #214a72;background:#0d2140}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>$BUTT — The Weekend Drums on TON</title>
+<meta name="description" content="$BUTT — Official Telegram butt sticker meme, now on TON. Shake it with $BUTT.">
+<style>
+  :root{
+    --bg: #070a12;
+    --card: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.08);
+    --text: #eaf1ff;
+    --muted:#9fb2d1;
+    --accent:#6aa8ff;
+    --accent-2:#69f0ae;
+    --warn:#ff72a6;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    color:var(--text);
+    background:
+      radial-gradient(1200px 800px at 10% -10%, #1a3dff20, transparent 60%),
+      radial-gradient(900px 700px at 100% 0%, #00e5ff15, transparent 60%),
+      linear-gradient(180deg, #0a0e1b, #080b15 40%, #070a12);
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:980px;margin-inline:auto;padding:28px}
+  .hero{
+    display:grid; gap:16px; align-items:center;
+    grid-template-columns: 120px 1fr; margin-top:8px;
+    padding:18px; border-radius:var(--radius); background:var(--card); box-shadow:var(--shadow); backdrop-filter: blur(8px)
+  }
+  /* Butt-Drums SVG container */
+  .logo{
+    width:120px;height:120px;background:var(--glass);
+    border-radius:24px; display:grid; place-items:center; position:relative;
+    box-shadow:var(--shadow);
+  }
+  /* drum-beat animation: cheeks bounce slightly */
+  .beat { transform-origin:center 70%; animation:beat 1.1s infinite ease-in-out }
+  @keyframes beat {
+    0%,100% { transform: translateY(0) scale(1) }
+    50%     { transform: translateY(-3px) scale(1.03) }
+  }
+  h1{
+    font-size:clamp(28px,6vw,48px); line-height:1.05; margin:0;
+    letter-spacing:.2px;
+  }
+  .tagline{color:var(--muted); font-size:clamp(14px,2.6vw,18px)}
+  .cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+  .btn{
+    padding:12px 16px; border-radius:14px; border:1px solid #ffffff14;
+    background:linear-gradient(180deg, #ffffff15, #ffffff05);
+    box-shadow:var(--shadow); color:var(--text); font-weight:600; cursor:pointer;
+    transition:.18s transform ease, .18s filter ease, .18s background ease;
+    display:inline-flex; align-items:center; gap:10px; backdrop-filter:blur(6px)
+  }
+  .btn:hover{ transform: translateY(-1px) }
+  .btn:active{ transform: translateY(0) scale(.98) }
+  .btn.primary{ background: linear-gradient(180deg, #3b82f6, #2563eb); border-color:#0000 }
+  .btn.green{ background: linear-gradient(180deg, #34d399, #10b981); border-color:#0000 }
+  .btn.pink { background: linear-gradient(180deg, #ff72a6, #ff4584); border-color:#0000 }
+
+  .panel{ background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); margin-top:18px }
+  .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap }
+  .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+  .muted{color:var(--muted)}
+  .pill{
+    padding:8px 12px; border-radius:999px; background:var(--glass);
+    border:1px solid #ffffff14; display:inline-flex; gap:8px; align-items:center
+  }
+  .grid{display:grid; gap:16px}
+  @media (min-width:900px){ .grid{ grid-template-columns: 1.25fr .75fr } }
+
+  /* Meme Maker */
+  .maker{ display:grid; gap:12px }
+  .canvas-wrap{
+    background:#0d1324; border-radius:16px; border:1px solid #ffffff14; padding:10px;
+    box-shadow:var(--shadow)
+  }
+  canvas{ width:100%; height:auto; display:block; border-radius:12px; }
+
+  .footer{margin:24px 0; color:var(--muted); text-align:center; font-size:14px}
+  .sep{height:1px; background: linear-gradient(90deg, #ffffff12, transparent); margin:16px 0}
+
+  /* falling confetti */
+  .confetti { position:fixed; inset:0; pointer-events:none; overflow:hidden }
+  .piece{
+    position:absolute; font-size:22px; user-select:none; animation: fall linear forwards;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,.35))
+  }
+  @keyframes fall {
+    0%{ transform: translateY(-10vh) rotate(0deg); opacity:0 }
+    10%{ opacity:1 }
+    100%{ transform: translateY(105vh) rotate(480deg); opacity:0.8 }
+  }
+</style>
 </head>
 <body>
+  <div class="confetti" id="confetti"></div>
+
   <div class="wrap">
-    <header>
-      <div class="brand">
-        <!-- Use your saved asset name tonfi-logo.png in same folder -->
-        <img src="tonfi-logo.png" alt="TonFi" onerror="this.style.display='none'"/>
-        <div>
-          <h1>TonFi Ecosystem Index</h1>
-          <div class="sub">Live view of TonFi partners, meme allies, and integrations on TON.</div>
+    <!-- HERO -->
+    <div class="hero">
+      <div class="logo" aria-label="$BUTT logo">
+        <!-- Minimal “butt drums” SVG (playful & simple) -->
+        <svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- cheeks -->
+          <g class="beat">
+            <circle cx="36" cy="36" r="16" stroke="white" stroke-width="5" fill="none"/>
+            <circle cx="60" cy="36" r="16" stroke="white" stroke-width="5" fill="none"/>
+          </g>
+          <!-- divider -->
+          <line x1="48" y1="20" x2="48" y2="76" stroke="white" stroke-width="5" stroke-linecap="round"/>
+          <!-- drums -->
+          <ellipse cx="32" cy="64" rx="16" ry="6.5" stroke="white" stroke-width="5" fill="none"/>
+          <ellipse cx="64" cy="64" rx="16" ry="6.5" stroke="white" stroke-width="5" fill="none"/>
+          <path d="M16 64 v14 a16 8 0 0 0 32 0 v-14" stroke="white" stroke-width="5" fill="none" />
+          <path d="M48 64 v14 a16 8 0 0 0 32 0 v-14" stroke="white" stroke-width="5" fill="none" />
+        </svg>
+      </div>
+
+      <div>
+        <h1>$BUTT — The Weekend Drums on TON</h1>
+        <div class="tagline">Official Telegram butt-sticker meme, now on-chain. <b>Shake it with $BUTT.</b> 🍑🥁</div>
+
+        <div class="cta-row">
+          <a class="btn primary" href="#" id="buyLink" target="_blank" rel="noopener">💎 Buy on DEX</a>
+          <a class="btn green" href="#" id="chartLink" target="_blank" rel="noopener">📈 Chart</a>
+          <a class="btn" href="https://t.me/addstickers" target="_blank" rel="noopener">🎨 Sticker Packs</a>
+          <a class="btn pink" href="#" id="tgLink" target="_blank" rel="noopener">🛰️ Telegram</a>
         </div>
       </div>
-      <div class="controls">
-        <input id="q" class="input" placeholder="Search by name, symbol, tag… (e.g., Crow, 1TON, Meme)" />
-        <select id="tag">
-          <option value="">All Tags</option>
-          <option value="Core">Core</option>
-          <option value="Partner">Partner</option>
-          <option value="Meme">Meme</option>
-          <option value="DeFi">DeFi</option>
-          <option value="Tooling">Tooling</option>
-        </select>
-        <select id="sort">
-          <option value="mcap">Sort: Market Cap</option>
-          <option value="vol">Sort: 24h Volume</option>
-          <option value="price">Sort: Price</option>
-          <option value="alpha">Sort: Name A→Z</option>
-          <option value="custom">Sort: Custom (cfg.order)</option>
-        </select>
-        <button class="btn" id="refresh">Refresh</button>
+    </div>
+
+    <!-- CONTRACT + METRICS -->
+    <div class="panel grid">
+      <div>
+        <h3 style="margin:6px 0 8px 0">Contract</h3>
+        <div class="row">
+          <span class="pill mono" id="addrShort">EQxxxxxxxx...xxxxxx</span>
+          <button class="btn" id="copyBtn">Copy</button>
+        </div>
+        <div class="muted" style="margin-top:8px">
+          Replace with your real jetton master address. The button copies the full address.
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="row">
+          <div class="pill">🪙 <b>Price:</b> <span id="price">—</span></div>
+          <div class="pill">🧢 <b>MC:</b> <span id="mcap">—</span></div>
+          <div class="pill">📊 <b>24h Vol:</b> <span id="vol">—</span></div>
+        </div>
+        <div class="muted" style="margin-top:8px">
+          (Optional) You can wire this to a pool API later—placeholders included below.
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="row">
+          <button class="btn" id="partyBtn">🎉 Weekend Drums</button>
+          <span class="muted">Tap for 🍑/🥁 confetti.</span>
+        </div>
       </div>
-    </header><div id="grid" class="grid"></div>
-<div id="empty" class="empty" style="display:none">No projects match your filters (yet). Try clearing search/tags.</div>
 
-<footer>
-  <div>Tip: edit the <span class="badge">PROJECTS</span> array in this file to add/update tokens. Data auto‑loads from Dexscreener → GeckoTerminal (fallback) → TonAPI.</div>
-  <div>Made with 💙 on TON — <span class="badge">TonFi</span></div>
-</footer>
-
-  </div><script>
-/**
- * TonFi Ecosystem Index — MVP
- * How to use:
- *  1) Drop this single file on Vercel (or any static hosting).
- *  2) Put your tonfi-logo.png in the same folder (or update the <img> src).
- *  3) Fill the PROJECTS array with your tokens and links.
- *  4) Click Refresh. Metrics will fetch automatically.
- *
- * NOTE: CORS policies for some APIs can vary. Dexscreener usually works fine from client-side.
- *       GeckoTerminal + TonAPI are provided as graceful fallbacks.
- */
-
-// === 1) Configure your ecosystem projects here ===
-const PROJECTS = [
-  // Example: TonFi (edit to real addresses)
-  {
-    name: "TonFi",
-    symbol: "TONFI",
-    logo: "tonfi-logo.png",
-    tokenAddress: "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", // TODO: put TonFi jetton master address
-    tags: ["Core", "DeFi"],
-    order: 1,
-    links: {
-      buy: "https://ston.fi/",           // Replace with direct Ston.fi pair
-      chart: "https://dexscreener.com/ton/", // Replace with pair page
-      site: "https://tonfi.space"
-    },
-    treasuryWallet: "UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" // optional — will display short + copy
-  },
-  // Example: 1TON
-  {
-    name: "1TON",
-    symbol: "1TON",
-    logo: "https://raw.githubusercontent.com/.../1ton.png",
-    tokenAddress: "EQBDc5nGD52r2GMIBo4tXaf4qdhUdgod9OxHhRcuRKjBryeJ",
-    tags: ["Meme", "Partner"],
-    order: 2,
-    links: {
-      buy: "https://ston.fi/",
-      chart: "https://dexscreener.com/ton/",
-      site: "https://1ton.space"
-    }
-  },
-  // Example: Crow
-  {
-    name: "Crow",
-    symbol: "CROW",
-    logo: "https://raw.githubusercontent.com/.../crow.png",
-    tokenAddress: "EQAtwo6qMNwtr0iTA9eKVZ32cuACFJ0VKd78GrBWOe83-X1P",
-    tags: ["Meme", "Partner"],
-    order: 3,
-    links: {
-      buy: "https://dedust.io/",
-      chart: "https://dexscreener.com/ton/",
-      site: "https://t.me/crow"
-    }
-  }
-];
-
-// === 2) Helpers ===
-const $ = (sel)=>document.querySelector(sel);
-const grid = $("#grid");
-const empty = $("#empty");
-const q = $("#q");
-const tag = $("#tag");
-const sortSel = $("#sort");
-const refreshBtn = $("#refresh");
-
-const fmt = {
-  compact(n){
-    if(n==null || isNaN(n)) return "—";
-    try{ return Intl.NumberFormat(undefined,{notation:'compact',maximumFractionDigits:2}).format(+n) }catch(e){return n}
-  },
-  money(n){
-    if(n==null || isNaN(n)) return "—";
-    try{ return "$"+Intl.NumberFormat(undefined,{maximumFractionDigits:6}).format(+n) }catch(e){return n}
-  },
-  pct(n){
-    if(n==null || isNaN(n)) return "—";
-    try{ return (n>0?"+":"")+Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(+n)+"%" }catch(e){return n}
-  },
-  shortAddr(a){ if(!a) return ""; return a.slice(0,6)+"…"+a.slice(-6) }
-};
-
-function badge(text){return `<span class="tag">${text}</span>`}
-
-function bySort(a,b,mode){
-  if(mode==='alpha') return a.name.localeCompare(b.name);
-  if(mode==='custom') return (a.order||999) - (b.order||999);
-  const ax = (a.metrics||{}), bx=(b.metrics||{});
-  if(mode==='price') return (bx.priceUsd||0)-(ax.priceUsd||0);
-  if(mode==='vol') return (bx.volume24h||0)-(ax.volume24h||0);
-  // default market cap
-  return (bx.fdv||bx.marketCap||0) - (ax.fdv||ax.marketCap||0);
-}
-
-// === 3) Data fetchers ===
-async function fetchDexscreener(addr){
-  // Docs: https://docs.dexscreener.com/
-  const url = `https://api.dexscreener.io/latest/dex/tokens/${addr}`;
-  const r = await fetch(url);
-  if(!r.ok) throw new Error('dexscreener fail');
-  const j = await r.json();
-  const pair = (j.pairs && j.pairs[0]) || null;
-  if(!pair) return null;
-  return {
-    source: 'dexscreener',
-    priceUsd: pair.priceUsd ? +pair.priceUsd : null,
-    fdv: pair.fdv ? +pair.fdv : null,
-    marketCap: pair.marketCap ? +pair.marketCap : null,
-    volume24h: pair.volume?.h24 ? +pair.volume.h24 : null,
-    change24h: pair.priceChange?.h24 ? +pair.priceChange.h24 : null,
-    pairUrl: pair.url || null
-  };
-}
-
-async function fetchGeckoTerminal(addr){
-  // Limited TON support; try common endpoint by token then first pool
-  const url = `https://api.geckoterminal.com/api/v2/networks/ton/tokens/${addr}/pools`;
-  const r = await fetch(url);
-  if(!r.ok) throw new Error('geckoterminal fail');
-  const j = await r.json();
-  const d = j?.data?.[0]?.attributes || null;
-  if(!d) return null;
-  return {
-    source: 'geckoterminal',
-    priceUsd: d?.base_token_price_usd ? +d.base_token_price_usd : null,
-    fdv: d?.fdv_usd ? +d.fdv_usd : null,
-    marketCap: d?.market_cap_usd ? +d.market_cap_usd : null,
-    volume24h: d?.volume_usd?.h24 ? +d.volume_usd.h24 : null,
-    change24h: d?.price_change_percentage?.h24 ? +d.price_change_percentage.h24 : null,
-    pairUrl: `https://www.geckoterminal.com/ton/tokens/${addr}`
-  };
-}
-
-async function fetchTonAPI(addr){
-  // Holders count / basic token info
-  // Docs: https://tonapi.io/ (public endpoints may be rate-limited client-side)
-  const url = `https://tonapi.io/v2/jettons/${addr}`;
-  const r = await fetch(url);
-  if(!r.ok) throw new Error('tonapi fail');
-  const j = await r.json();
-  const holders = j?.holders_count ?? null;
-  const supply = j?.total_supply ?? null;
-  return { source:'tonapi', holders, supply };
-}
-
-async function hydrate(project){
-  const addr = project.tokenAddress;
-  const out = { };
-  try { Object.assign(out, await fetchDexscreener(addr)); } catch(e){}
-  if(!out.priceUsd){ try { Object.assign(out, await fetchGeckoTerminal(addr)); } catch(e){} }
-  try { Object.assign(out, await fetchTonAPI(addr)); } catch(e){}
-  return out;
-}
-
-// === 4) Rendering ===
-function projectCard(p){
-  const m = p.metrics||{};
-  const chgClass = (m.change24h||0) >= 0 ? 'chg up' : 'chg down';
-  const pairUrl = p.links?.chart || m.pairUrl || '#';
-  return `
-    <div class="card" data-name="${(p.name||'').toLowerCase()}" data-tags="${(p.tags||[]).join(',').toLowerCase()}">
-      <div class="row stretch">
-        <div class="token">
-          <div class="logo">${p.logo?`<img src="${p.logo}" alt="${p.symbol}">`:'🪙'}</div>
-          <div>
-            <div class="name">${p.name} <span class="sym">${p.symbol?`• ${p.symbol}`:''}</span></div>
-            <div class="small">${(p.tags||[]).map(badge).join(' ')}</div>
+      <!-- Meme Maker -->
+      <div>
+        <h3 style="margin:6px 0 8px 0">Meme Card Generator</h3>
+        <div class="maker">
+          <input id="topText" class="pill mono" style="width:100%" placeholder="Top text (e.g., Bring out the weekend drums)" />
+          <input id="bottomText" class="pill mono" style="width:100%" placeholder="Bottom text (e.g., Shake it with $BUTT)" />
+          <div class="row" style="flex-wrap:wrap">
+            <button class="btn" data-preset="Bring out the weekend drums">Preset 1</button>
+            <button class="btn" data-preset="What are you doing this weekend?">Preset 2</button>
+            <button class="btn" data-preset="Official Telegram meme, now tokenized">Preset 3</button>
           </div>
+          <div class="canvas-wrap">
+            <canvas id="meme" width="1024" height="1024" aria-label="$BUTT meme canvas"></canvas>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="renderBtn">🖼️ Render</button>
+            <a class="btn" id="downloadBtn" download="BUTT-meme.png">⬇️ Download</a>
+          </div>
+          <div class="muted" style="font-size:13px">Tip: Post with #TON #BUTT and tag friends for maximum weekend chaos.</div>
         </div>
-        <div class="row" style="gap:8px">
-          ${p.treasuryWallet?`<div class="small copy" title="Copy treasury" data-copy="${p.treasuryWallet}">Treasury: ${fmt.shortAddr(p.treasuryWallet)}</div>`:''}
-          <div class="small">Last update: <span>${p._updated?new Date(p._updated).toLocaleTimeString():"—"}</span></div>
-        </div>
       </div>
+    </div>
 
-      <div class="metrics">
-        <div class="metric"><div class="label">Price</div><div class="val">${fmt.money(m.priceUsd)}</div></div>
-        <div class="metric"><div class="label">FDV / MC</div><div class="val">${m.fdv?fmt.compact(m.fdv):fmt.compact(m.marketCap)}</div></div>
-        <div class="metric"><div class="label">24h Vol</div><div class="val">${fmt.compact(m.volume24h)}</div></div>
-      </div>
+    <!-- STORY -->
+    <div class="panel">
+      <h3 style="margin:6px 0 8px 0">The Story</h3>
+      <p>
+        Back in 2019, Telegram posted the <em>“weekend drums”</em> animated butt sticker. The internet never recovered.
+        Today, that meme lives on chain as <b>$BUTT</b> — a celebration of sticker culture, party energy, and absurd humor.
+      </p>
+      <ul>
+        <li>🍑 <b>Origin:</b> Telegram’s post about animated butt drums (sticker culture royalty)</li>
+        <li>🥁 <b>Vibe:</b> Friday hype, Saturday chaos, Sunday regrets</li>
+        <li>🛰️ <b>Home:</b> Built for TON’s meme economy</li>
+      </ul>
+    </div>
 
-      <div class="small ${chgClass}" style="margin-top:6px">24h: ${fmt.pct(m.change24h)}</div>
-      ${m.holders?`<div class="small">Holders: ${fmt.compact(m.holders)}</div>`:''}
+    <div class="footer">© $BUTT — Shake it responsibly. Not financial advice. Meme responsibly.</div>
+  </div>
 
-      <div class="actions">
-        ${p.links?.buy?`<a class="pill" target="_blank" rel="noopener" href="${p.links.buy}">Buy</a>`:''}
-        ${pairUrl?`<a class="pill" target="_blank" rel="noopener" href="${pairUrl}">Chart</a>`:''}
-        ${p.links?.site?`<a class="pill" target="_blank" rel="noopener" href="${p.links.site}">Website</a>`:''}
-        <a class="pill" target="_blank" rel="noopener" href="https://tonviewer.com/${p.tokenAddress}">Tonviewer</a>
-      </div>
-    </div>`;
-}
+<script>
+/* ------------------ CONFIG (edit these) ------------------ */
+const CONTRACT_FULL = "EQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // put full jetton master address
+const DEDUST_BUY = "#";    // e.g., https://dedust.io/swap/ton/xxxxx
+const CHART_LINK = "#";    // e.g., https://dexscreener.com/ton/xxxxx
+const TG_LINK    = "#";    // your Telegram group/channel link
 
-function applyFilters(){
-  const text = (q.value||'').trim().toLowerCase();
-  const tagVal = (tag.value||'').toLowerCase();
-  const cards = [...grid.children];
-  let shown = 0;
-  for(const c of cards){
-    const name = c.getAttribute('data-name')||'';
-    const tags = c.getAttribute('data-tags')||'';
-    const matchText = !text || name.includes(text) || tags.includes(text);
-    const matchTag = !tagVal || tags.split(',').includes(tagVal);
-    const ok = matchText && matchTag;
-    c.style.display = ok ? '' : 'none';
-    if(ok) shown++;
-  }
-  empty.style.display = shown? 'none':'block';
-}
+// (Optional) price feed placeholders — if you have an endpoint, set it here.
+// Example idea (GeckoTerminal pool): const PRICE_API = 'https://api.geckoterminal.com/api/v2/networks/ton/pools/<POOL_ID>';
+const PRICE_API = null;
 
-function render(list){
-  grid.innerHTML = list.map(projectCard).join('');
-  applyFilters();
-}
+/* ------------------ LINKS + ADDRESS ------------------ */
+document.getElementById('buyLink').href = DEDUST_BUY;
+document.getElementById('chartLink').href = CHART_LINK;
+document.getElementById('tgLink').href = TG_LINK;
 
-async function refresh(){
-  const list = JSON.parse(JSON.stringify(PROJECTS));
-  // hydrate metrics in parallel but limit concurrency to be gentle
-  const chunks = 4;
-  const out = [];
-  for(let i=0;i<list.length;i+=chunks){
-    const slice = list.slice(i,i+chunks);
-    const hydrated = await Promise.all(slice.map(async p=>{
-      try{
-        p.metrics = await hydrate(p);
-        p._updated = Date.now();
-      }catch(e){ p.metrics = {}; }
-      return p;
-    }));
-    out.push(...hydrated);
-    render(sort(out)); // progressive render
-  }
-}
+// Short display like EQxxxx...xxxx
+const shortAddr = (addr)=> addr.length > 14 ? addr.slice(0,8)+"..."+addr.slice(-6) : addr;
+document.getElementById('addrShort').textContent = shortAddr(CONTRACT_FULL);
 
-function sort(arr){
-  const mode = sortSel.value;
-  return arr.sort((a,b)=>bySort(a,b,mode));
-}
-
-// === 5) Events ===
-q.addEventListener('input', applyFilters);
-[tag, sortSel].forEach(el=>el.addEventListener('change', ()=>{ render(sort([...document._current||PROJECTS])); }));
-refreshBtn.addEventListener('click', refresh);
-
-grid.addEventListener('click', (e)=>{
-  const t = e.target.closest('.copy');
-  if(t){
-    const v = t.getAttribute('data-copy');
-    if(v){ navigator.clipboard.writeText(v); t.textContent = 'Copied!'; setTimeout(()=>t.textContent = 'Treasury: '+fmt.shortAddr(v), 1200); }
-  }
+// Copy full address
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(CONTRACT_FULL);
+    toast("Copied!");
+    confetti(16);
+  } catch(e){ toast("Copy failed"); }
 });
 
-// Initial render (no metrics yet), then auto-refresh once
-render(sort([...PROJECTS]));
-refresh();
-</script></body>
+/* ------------------ PRICE FETCH (optional) ------------------ */
+async function maybeFetchPrice(){
+  if(!PRICE_API) return;
+  try{
+    const r = await fetch(PRICE_API, {cache:'no-store'});
+    const j = await r.json();
+    // NOTE: Map fields according to your chosen endpoint.
+    // Example (GeckoTerminal): j.data.attributes.base_token_price_usd
+    const price = j?.data?.attributes?.base_token_price_usd ?? null;
+    const mcap  = j?.data?.attributes?.fdv_usd ?? null;
+    const vol24 = j?.data?.attributes?.volume_usd?.h24 ?? null;
+
+    if(price) document.getElementById('price').textContent = "$" + Number(price).toLocaleString();
+    if(mcap)  document.getElementById('mcap').textContent  = "$" + Number(mcap).toLocaleString();
+    if(vol24) document.getElementById('vol').textContent   = "$" + Number(vol24).toLocaleString();
+  }catch(e){
+    console.log("Price fetch failed", e);
+  }
+}
+maybeFetchPrice();
+
+/* ------------------ CONFETTI ------------------ */
+const cf = document.getElementById('confetti');
+function confetti(n=24){
+  for(let i=0;i<n;i++){
+    const el = document.createElement('div');
+    el.className = 'piece';
+    el.textContent = Math.random() < 0.5 ? '🍑' : '🥁';
+    el.style.left = (Math.random()*100)+'vw';
+    el.style.animationDuration = (1.8 + Math.random()*1.6)+'s';
+    el.style.animationDelay = (Math.random()*0.4)+'s';
+    el.style.transform = `translateY(-10vh) rotate(${Math.random()*360}deg)`;
+    cf.appendChild(el);
+    setTimeout(()=> el.remove(), 3200);
+  }
+}
+document.getElementById('partyBtn').addEventListener('click', ()=> confetti(42));
+
+/* ------------------ TOAST (tiny) ------------------ */
+function toast(msg){
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.position='fixed'; t.style.bottom='20px'; t.style.left='50%'; t.style.transform='translateX(-50%)';
+  t.style.padding='10px 14px'; t.style.borderRadius='12px';
+  t.style.background='rgba(255,255,255,.1)'; t.style.border='1px solid #ffffff22';
+  t.style.backdropFilter='blur(6px)'; t.style.color='white'; t.style.boxShadow='var(--shadow)';
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='.4s'; }, 1200);
+  setTimeout(()=> t.remove(), 1800);
+}
+
+/* ------------------ MEME MAKER ------------------ */
+const canvas = document.getElementById('meme');
+const ctx = canvas.getContext('2d');
+
+// Draw simple meme card: gradient bg, SVG cheeks+drums, text
+function drawMeme(top, bottom){
+  // bg
+  const g = ctx.createLinearGradient(0,0,0,canvas.height);
+  g.addColorStop(0,'#101a38'); g.addColorStop(1,'#070b15');
+  ctx.fillStyle = g; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // subtle grid
+  ctx.strokeStyle = 'rgba(255,255,255,.06)';
+  ctx.lineWidth = 2;
+  for(let y=0; y<canvas.height; y+=64){
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke();
+  }
+
+  // white frame
+  ctx.strokeStyle = 'rgba(255,255,255,.16)';
+  ctx.lineWidth = 12; ctx.strokeRect(24,24,canvas.width-48,canvas.height-48);
+
+  // draw butt drums (vector-esque)
+  const cx = canvas.width/2, cy = canvas.height*0.44;
+  const scale = 4.6;
+
+  ctx.save();
+  ctx.translate(cx-80, cy-80);
+  ctx.scale(scale, scale);
+  ctx.lineWidth = 1.4; ctx.strokeStyle = '#fff'; ctx.fillStyle='transparent';
+
+  // cheeks
+  function circle(x,y,r){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke(); }
+  circle(20,20,10); circle(40,20,10);
+  // divider
+  ctx.beginPath(); ctx.moveTo(30,6); ctx.lineTo(30,38); ctx.stroke();
+  // drums
+  function drum(cx,cy){
+    ctx.beginPath(); // rim
+    ctx.ellipse(cx,cy,12,5,0,0,Math.PI*2); ctx.stroke();
+    ctx.beginPath(); // body
+    ctx.moveTo(cx-12,cy); ctx.lineTo(cx-12,18); ctx.ellipse(cx,18,12,5,0,Math.PI,0,true); ctx.lineTo(cx+12,cy); ctx.stroke();
+  }
+  drum(14,36); drum(46,36);
+  ctx.restore();
+
+  // header chip
+  rounded(40,40, 220,54, 16);
+  ctx.fillStyle='rgba(255,255,255,.08)'; ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.14)'; ctx.lineWidth=3; ctx.stroke();
+  ctx.fillStyle='#eaf1ff'; ctx.font='bold 30px system-ui, sans-serif';
+  ctx.fillText('$BUTT • Weekend Drums', 56, 76);
+
+  // texts
+  ctx.textAlign='center'; ctx.fillStyle='#eaf1ff';
+  // top text
+  autoText(top || '', canvas.width/2, canvas.height*0.10, 44, 820, true);
+  // bottom text
+  autoText(bottom || '', canvas.width/2, canvas.height*0.82, 48, 860, false);
+
+  // watermark
+  ctx.font='bold 28px system-ui, sans-serif';
+  ctx.fillStyle='rgba(255,255,255,.35)';
+  ctx.fillText('Shake it with $BUTT 🍑🥁', canvas.width/2, canvas.height-42);
+
+  function rounded(x,y,w,h,r){ ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+}
+
+// auto-wrap text
+function autoText(text, x, y, size, maxWidth, top=true){
+  const words = text.toUpperCase().split(' ');
+  let line='', lines=[];
+  ctx.font = `900 ${size}px Impact, system-ui, sans-serif`;
+  for(const w of words){
+    const test = line? line+' '+w : w;
+    const width = ctx.measureText(test).width;
+    if(width < maxWidth){ line = test; } else { lines.push(line); line = w; }
+  }
+  if(line) lines.push(line);
+
+  const totalH = lines.length * (size + 10);
+  let startY = top? y : y - totalH;
+  for(const l of lines){
+    // outline
+    ctx.strokeStyle='#000'; ctx.lineWidth=10; ctx.strokeText(l, x, startY);
+    ctx.fillStyle='#fff'; ctx.fillText(l, x, startY);
+    startY += size + 10;
+  }
+}
+
+// initial meme
+drawMeme('BRING OUT THE WEEKEND DRUMS','SHAKE IT WITH $BUTT');
+
+document.querySelectorAll('[data-preset]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.getElementById('topText').value = btn.dataset.preset;
+  })
+});
+
+document.getElementById('renderBtn').addEventListener('click', ()=>{
+  const top = document.getElementById('topText').value;
+  const bot = document.getElementById('bottomText').value;
+  drawMeme(top, bot);
+  confetti(18);
+});
+
+document.getElementById('downloadBtn').addEventListener('click', (e)=>{
+  e.currentTarget.href = canvas.toDataURL('image/png');
+});
+
+/* party on load (subtle) */
+setTimeout(()=> confetti(10), 800);
+</script>
+</body>
 </html>

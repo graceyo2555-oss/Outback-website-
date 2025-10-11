@@ -1,296 +1,175 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>YOUR_TOKEN — Butt Narrative on TON</title>
-<meta name="description" content="YOUR_TOKEN on TON. The Butt Narrative: cheeky memes, degen vibes, and community-first energy." />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#070b13; --panel:#0d1523; --ink:#eaf2ff; --muted:#a3b2cb;
-    --accent:#3aa0ff; --accent2:#66e3ff; --ton:#0098ea;
-    --ok:#3ecf8e; --warn:#ffd166; --fail:#ff6b6b;
-    --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.35); --max:1100px;
-  }
-  *{box-sizing:border-box} body{margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink);
-    background:radial-gradient(1200px 600px at 70% -10%, rgba(0,152,234,.25), transparent 60%),
-               radial-gradient(1000px 600px at -10% 110%, rgba(102,227,255,.15), transparent 60%), var(--bg);}
-  a{color:var(--accent); text-decoration:none}
-  .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
-  header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(140%) blur(8px);
-    background:linear-gradient(180deg, rgba(7,11,19,.85), rgba(7,11,19,.35)); border-bottom:1px solid rgba(255,255,255,.06);}
-  .nav{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0;}
-  .brand{display:flex; align-items:center; gap:10px; font-weight:800}
-  .brand svg{width:28px; height:28px}
-  .menu{display:flex; gap:14px; flex-wrap:wrap}
-  .menu a{padding:8px 12px; border-radius:10px; color:var(--ink)}
-  .menu a:hover{background:rgba(255,255,255,.06)}
-  .cta{display:flex; gap:10px; flex-wrap:wrap}
-  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:12px;
-    border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    color:var(--ink); font-weight:600; box-shadow:var(--shadow); transition:.15s}
-  .btn:hover{transform:translateY(-1px)}
-  .btn.primary{background:linear-gradient(180deg, var(--accent), var(--accent2)); border-color:transparent; color:#00131f}
-  .btn.small{padding:8px 12px}
-  .hero{position:relative; padding:84px 0 44px; overflow:hidden}
-  .floating{position:absolute; inset:0; pointer-events:none; opacity:.22}
-  .ton{position:absolute; width:56px; height:56px; animation:float 20s linear infinite}
-  .ton:nth-child(1){left:12%; top:70%} .ton:nth-child(2){left:80%; top:20%; animation-duration:24s}
-  .ton:nth-child(3){left:6%; top:18%; animation-duration:22s} .ton:nth-child(4){left:88%; top:72%; animation-duration:26s}
-  @keyframes float{0%{transform:translateY(40px)}50%{transform:translateY(-20px)}100%{transform:translateY(40px)}}
-  h1{font-size:clamp(28px,5vw,48px); line-height:1.05; margin:0 0 12px}
-  p.lede{font-size:clamp(16px,2.5vw,20px); color:var(--muted); margin:0 0 22px}
-  .badges{display:flex; gap:12px; flex-wrap:wrap; margin:20px 0}
-  .badge{padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); color:var(--muted); font-weight:700}
-  section{padding:58px 0}
-  .panel{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-    border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow)}
-  .grid{display:grid; gap:18px}
-  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
-  @media (max-width:900px){.g2,.g3{grid-template-columns:1fr} .cta{width:100%} .btn{flex:1}}
-  h2{font-size:28px; margin:0 0 14px} h3{font-size:18px; margin:0 0 6px}
-  .kpi{display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:12px; background:rgba(0,152,234,.08); border:1px solid rgba(0,152,234,.25)}
-  .muted{color:var(--muted)} .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace}
-  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-  .num{width:36px; height:36px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center;
-    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); font-weight:800}
-  .steps .panel{display:flex; gap:14px; align-items:flex-start}
-  .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08)}
-  footer{padding:48px 0; border-top:1px solid rgba(255,255,255,.06); background:linear-gradient(180deg, rgba(7,11,19,.25), rgba(7,11,19,.7))}
-  .footgrid{display:grid; gap:18px; grid-template-columns:2fr 1fr 1fr} @media(max-width:900px){.footgrid{grid-template-columns:1fr}}
-  .tiny{font-size:12px; color:var(--muted)} .chip{padding:8px 10px; border-radius:10px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1)}
-  .success{color:var(--ok); font-weight:700}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Butts — TON Meme & Sticker Pack</title>
+  <meta name="description" content="Butts — a playful TON meme inspired by the official Telegram animated sticker pack. Proof inside via Telegram’s tweet." />
+  <meta property="og:title" content="Butts — TON Meme & Sticker Pack" />
+  <meta property="og:description" content="Playful TON meme. Official Telegram sticker pack referenced + embedded tweet for proof." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0f2418" />
+
+  <style>
+    :root{
+      /* Adjust this to the exact hex you want to match greeneton.com */
+      --bg: #0f2418;          /* deep green background */
+      --card: rgba(255,255,255,0.06);
+      --text: #e7f5ed;
+      --muted: #b7d1c3;
+      --accent: #32d296;      /* minty accent */
+      --ton: #0098ea;         /* TON blue for badges/links */
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    /* Reset + base */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a{color: var(--accent); text-decoration: none}
+    a:hover{opacity:.9; text-decoration: underline}
+
+    .wrap{max-width: 1100px; margin: 0 auto; padding: 28px}
+    .glass{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+    .btn{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding: .9rem 1.1rem;
+      border-radius: 14px;
+      font-weight: 700;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .pill{display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .7rem; border-radius:999px; background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); color:var(--muted); font-weight:700; font-size:.85rem}
+    .pill .dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--ton);display:inline-block}
+
+    header .hero{
+      display:grid; gap:22px; align-items:center;
+      grid-template-columns: 1.2fr .8fr;
+    }
+    @media (max-width: 900px){
+      header .hero{grid-template-columns: 1fr}
+    }
+
+    .title{font-size: clamp(2.2rem, 2.5vw + 1.2rem, 4rem); line-height: 1.15; margin: 0}
+    .subtitle{color: var(--muted); margin-top:.5rem}
+    .card{padding: 22px}
+    .grid{display:grid; gap:18px}
+    .grid-2{grid-template-columns: 1fr 1fr}
+    @media (max-width: 900px){ .grid-2{grid-template-columns: 1fr} }
+
+    .tweet-embed{
+      overflow:hidden; border-radius: var(--radius);
+      background:#000; /* just while script loads */
+      min-height: 140px;
+    }
+    footer{opacity:.8; font-size:.9rem; padding: 24px 0 40px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+  </style>
 </head>
 <body>
-<header>
-  <div class="wrap nav">
-    <div class="brand">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l9 5.25-9 14.75L3 7.25 12 2Z" stroke="url(#g1)" stroke-width="1.5"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0098EA"/><stop offset="1" stop-color="#66E3FF"/></linearGradient></defs></svg>
-      <span>YOUR_TOKEN <span class="muted">($YOUR_TICKER)</span></span>
+  <div class="wrap">
+    <!-- Top bar -->
+    <div class="glass card" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <div class="pill"><span class="dot"></span> TON Meme</div>
+      <nav style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank" rel="noopener">Sticker Pack</a>
+        <a class="btn" href="https://ton.org" target="_blank" rel="noopener">About TON</a>
+      </nav>
     </div>
-    <nav class="menu" aria-label="Main">
-      <a href="#about">About</a>
-      <a href="#narrative">Butt Narrative</a>
-      <a href="#tokenomics">Tokenomics</a>
-      <a href="#howto">How to Buy</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="#community">Community</a>
-    </nav>
-    <div class="cta">
-      <a class="btn small" href="YOUR_DEXS_LINK" target="_blank" rel="noopener">Chart</a>
-      <a class="btn primary small" href="YOUR_STONFI_LINK" target="_blank" rel="noopener">Buy</a>
-    </div>
-  </div>
-</header>
 
-<main>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="floating" aria-hidden="true">
-      <div class="ton" style="left:18%; top:76%;">💎</div>
-      <div class="ton">
-        <svg viewBox="0 0 24 24"><path d="M12 2l9 5.25-9 14.75L3 7.25 12 2Z" fill="rgba(0,152,234,.45)"/></svg>
-      </div>
-      <div class="ton">
-        <svg viewBox="0 0 24 24"><path d="M12 2l9 5.25-9 14.75L3 7.25 12 2Z" fill="rgba(102,227,255,.4)"/></svg>
-      </div>
-      <div class="ton">
-        <svg viewBox="0 0 24 24"><path d="M12 2l9 5.25-9 14.75L3 7.25 12 2Z" fill="rgba(0,152,234,.3)"/></svg>
-      </div>
-    </div>
-    <div class="wrap">
-      <div class="grid g2" style="align-items:center">
+    <!-- HERO -->
+    <header style="margin-top:20px;">
+      <div class="glass card hero">
         <div>
-          <h1>Meet <span style="color:var(--ton)">YOUR_TOKEN</span> — the Butt Narrative on TON</h1>
-          <p class="lede">Cheeky memes. Thicc culture. Zero promises. 100% community. We’re here to sit tight and moon.</p>
-          <div class="badges">
-            <span class="badge">Community Owned</span><span class="badge">Zero Team Allocation</span><span class="badge">Built on TON</span>
-          </div>
-          <div class="cta">
-            <a class="btn primary" href="YOUR_STONFI_LINK" target="_blank" rel="noopener">Buy $YOUR_TICKER</a>
-            <a class="btn" href="#narrative">Read the Narrative</a>
-          </div>
-        </div>
-        <div>
-          <div class="panel">
-            <h3 style="margin-top:0">Quick Actions</h3>
-            <div class="row">
-              <a class="btn small" href="YOUR_STONFI_LINK" target="_blank" rel="noopener">Swap on Ston.fi</a>
-              <a class="btn small" href="YOUR_DEXS_LINK" target="_blank" rel="noopener">View Chart</a>
-            </div>
-            <div style="height:10px"></div>
-            <div class="kpi mono"><span>Contract</span><span id="addrShort" class="muted">EQxxxxxx...yyyyyy</span></div>
-            <div class="row" style="margin-top:8px">
-              <span class="chip mono" id="addrFull">EQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
-              <button class="btn small" id="copyBtn">Copy</button>
-              <span id="copyMsg" class="success" style="display:none">Copied ✓</span>
-            </div>
-            <div class="row" style="margin-top:8px">
-              <span class="chip">Network: TON</span><span class="chip">DEX: Ston.fi</span>
-            </div>
+          <h1 class="title">BUTTS<br/><span style="color:var(--accent)">on&nbsp;TON</span></h1>
+          <p class="subtitle">
+            A playful meme project celebrating the <strong>official Telegram animated sticker pack “Butts”</strong>.
+            Simple. Silly. On-chain.
+          </p>
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" href="#proof">See Proof (Tweet)</a>
+            <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank" rel="noopener">Add Stickers</a>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="wrap grid g2">
-      <div class="panel">
-        <h2>About</h2>
-        <p class="muted">YOUR_TOKEN is a community-driven meme coin living on TON. No roadmap promises—only vibes, memes, and the unstoppable power of collective cheek.</p>
-      </div>
-      <div class="panel">
-        <h2>Why TON</h2>
-        <div class="grid g2">
-          <div><h3>Fast & Cheap</h3><p class="muted">Blazing speeds with tiny fees—perfect for degen flow.</p></div>
-          <div><h3>Telegram Native</h3><p class="muted">Where the memes happen and the raids begin.</p></div>
-          <div><h3>Simple UX</h3><p class="muted">Easy wallets, smooth swaps, fewer headaches.</p></div>
-          <div><h3>Community Energy</h3><p class="muted">Culture compounds when holders show up.</p></div>
+        <div class="glass card" style="aspect-ratio:1/1; display:grid; place-items:center; background: radial-gradient(1200px 400px at -10% 0%, rgba(50,210,150,.18), transparent 60%), radial-gradient(800px 300px at 110% 120%, rgba(0,152,234,.15), transparent 60%);">
+          <div style="font-size: clamp(3rem, 8vw, 6rem);">🍑</div>
         </div>
       </div>
-    </div>
-  </section>
+    </header>
 
-  <!-- BUTT NARRATIVE -->
-  <section id="narrative">
-    <div class="wrap">
-      <div class="panel">
-        <h2>Butt Narrative</h2>
-        <p class="muted">We’re turning the other cheek on boring utility. The Butt Narrative is simple:</p>
-        <div class="grid g3">
-          <div class="panel" style="background:rgba(0,152,234,.06)">
-            <h3>Cheeky Origin</h3>
-            <p class="muted">Born from the meme anatomy: bold bottoms, bigger laughs. It’s lighthearted, instantly shareable, and impossible to ignore.</p>
-          </div>
-          <div class="panel" style="background:rgba(255,209,102,.08)">
-            <h3>Culture First</h3>
-            <p class="muted">Narratives move faster than features. We lean into humor to build a sticky identity that spreads across Telegram and X.</p>
-          </div>
-          <div class="panel" style="background:rgba(62,207,142,.08)">
-            <h3>Holder-Powered</h3>
-            <p class="muted">No dev tax, no secret allocations. Just community coordination, meme velocity, and organic reach.</p>
+    <!-- WHAT/WHY -->
+    <section style="margin-top:20px;">
+      <div class="grid grid-2">
+        <div class="glass card">
+          <h2 style="margin:0 0 6px 0;">What is Butts?</h2>
+          <p class="subtitle">A light-hearted meme on the <strong>TON</strong> blockchain, riffing on Telegram’s popular animated sticker pack. No promises—just vibes.</p>
+          <ul style="margin: 14px 0 0 18px;">
+            <li>Sticker pack: <a href="https://t.me/addstickers/AnimatedButts" target="_blank" rel="noopener">Animated Butts</a></li>
+            <li>TON-friendly, fast, and cheap</li>
+            <li>Community-first; meme at will</li>
+          </ul>
+        </div>
+        <div class="glass card">
+          <h2 style="margin:0 0 6px 0;">Why TON?</h2>
+          <p class="subtitle">TON’s speed, low fees, and Telegram-native distribution make it perfect for fun social memes and sticker-powered culture.</p>
+          <div style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" href="https://ton.org" target="_blank" rel="noopener">Explore TON</a>
+            <a class="btn" href="https://x.com/telegram" target="_blank" rel="noopener">Follow Telegram on X</a>
           </div>
         </div>
-        <p class="muted">If it makes you grin, post it. If it raids, pin it. If it dips… sit on it. 🍑</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- TOKENOMICS -->
-  <section id="tokenomics">
-    <div class="wrap">
-      <div class="panel">
-        <h2>Tokenomics</h2>
-        <div class="grid g3">
-          <div class="panel" style="background:rgba(0,152,234,.06)"><h3>Total Supply</h3><p class="muted mono">YOUR_TOTAL_SUPPLY $YOUR_TICKER</p></div>
-          <div class="panel" style="background:rgba(62,207,142,.08)"><h3>Community</h3><p class="muted mono">100% — No Team Allocation</p></div>
-          <div class="panel" style="background:rgba(255,209,102,.08)"><h3>LP/Listing</h3><p class="muted mono">As decided by holders</p></div>
+    <!-- PROOF: Embedded official Telegram tweet -->
+    <section id="proof" style="margin-top:20px;">
+      <div class="glass card">
+        <h2 style="margin:0 0 6px 0;">Proof from Telegram</h2>
+        <p class="subtitle">
+          Telegram’s official account highlighted the animated butt stickers. The embedded post below is fetched directly from X/Twitter.
+        </p>
+
+        <div class="tweet-embed">
+          <blockquote class="twitter-tweet" data-theme="dark" style="margin:0;">
+            <a href="https://x.com/telegram/status/1164909277053693954"></a>
+          </blockquote>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- HOW TO BUY -->
-  <section id="howto">
-    <div class="wrap">
-      <h2>How to Buy</h2>
-      <div class="grid steps g2">
-        <div class="panel"><div class="num">1</div><div><h3>Get a TON Wallet</h3><p class="muted">Install Tonkeeper or TON Wallet.</p></div></div>
-        <div class="panel"><div class="num">2</div><div><h3>Fund with TON</h3><p class="muted">Buy on a CEX and send to your wallet.</p></div></div>
-        <div class="panel"><div class="num">3</div><div><h3>Swap</h3><p class="muted">Use Ston.fi to swap TON → $YOUR_TICKER.</p></div></div>
-        <div class="panel"><div class="num">4</div><div><h3>Meme</h3><p class="muted">Join raids, post art, spread cheeks.</p></div></div>
+        <p style="margin-top:12px; font-size:.95rem; color:var(--muted);">
+          If the tweet doesn’t load (some privacy extensions block embeds), tap the direct link:
+          <a href="https://x.com/telegram/status/1164909277053693954" target="_blank" rel="noopener">open on X</a>.
+        </p>
       </div>
-      <div class="row" style="margin-top:14px">
-        <a class="btn primary" href="YOUR_STONFI_LINK" target="_blank" rel="noopener">Swap on Ston.fi</a>
-        <a class="btn" href="YOUR_DEXS_LINK" target="_blank" rel="noopener">Live Chart</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ROADMAP -->
-  <section id="roadmap">
-    <div class="wrap">
-      <div class="panel">
-        <h2>Roadmap</h2>
-        <ul>
-          <li>Phase 1 — Launch & Liquidity</li>
-          <li>Phase 2 — Memes, Raids, Collabs</li>
-          <li>Phase 3 — Listings & Merch</li>
-          <li>Phase 4 — Culture Footprint</li>
-        </ul>
-        <p class="tiny muted">This is a meme token. No promises—only community actions.</p>
+    <!-- Footer -->
+    <footer class="wrap" style="padding-left:0; padding-right:0;">
+      <div class="glass card" style="text-align:center;">
+        <p class="mono" style="margin:0;">Butts · TON Meme • Stickers by Telegram community</p>
+        <p style="margin:.4rem 0 0 0; color:var(--muted); font-size:.9rem;">
+          Background styled to match Greeneton’s deep green aesthetic. (Reference opened for look & feel.) 
+        </p>
       </div>
-    </div>
-  </section>
-
-  <!-- COMMUNITY -->
-  <section id="community">
-    <div class="wrap grid g3">
-      <div class="panel">
-        <h3>Join</h3>
-        <p class="muted">Hop into Telegram and follow on X for raids, updates, and art drops.</p>
-        <div class="row">
-          <a class="btn small" target="_blank" rel="noopener" href="https://t.me/yourtoken">Telegram</a>
-          <a class="btn small" target="_blank" rel="noopener" href="https://x.com/yourtoken">Twitter</a>
-          <a class="btn small" target="_blank" rel="noopener" href="YOUR_DEXS_LINK">Chart</a>
-        </div>
-      </div>
-      <div class="panel">
-        <h3>Docs</h3>
-        <p class="muted"><a href="#narrative">Butt Narrative</a> · <a href="#tokenomics">Tokenomics</a> · <a href="#howto">How to Buy</a></p>
-      </div>
-      <div class="panel">
-        <h3>Disclaimer</h3>
-        <p class="tiny muted">Entertainment only. DYOR. Crypto is risky.</p>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap footgrid">
-    <div>
-      <div class="pill mono">YOUR_TOKEN ($YOUR_TICKER) — TON</div>
-      <p class="tiny">© <span id="year"></span> YOUR_TOKEN.</p>
-    </div>
-    <div>
-      <h4 style="margin:0 0 8px">Community</h4>
-      <p class="tiny"><a href="https://t.me/yourtoken" target="_blank" rel="noopener">Telegram</a> · <a href="https://x.com/yourtoken" target="_blank" rel="noopener">Twitter</a></p>
-    </div>
-    <div>
-      <h4 style="margin:0 0 8px">Trade</h4>
-      <p class="tiny"><a href="YOUR_STONFI_LINK" target="_blank" rel="noopener">Buy</a> · <a href="YOUR_DEXS_LINK" target="_blank" rel="noopener">Chart</a></p>
-    </div>
+    </footer>
   </div>
-</footer>
 
-<script>
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click', e=>{
-      const id = a.getAttribute('href').slice(1);
-      const el = document.getElementById(id);
-      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
-    });
-  });
-
-  // Contract copy
-  const full = "EQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // put full contract
-  const short = full.slice(0,10) + "..." + full.slice(-6);
-  document.getElementById('addrFull').textContent = full;
-  document.getElementById('addrShort').textContent = short;
-  document.getElementById('copyBtn').addEventListener('click', async ()=>{
-    try{ await navigator.clipboard.writeText(full);
-      const m=document.getElementById('copyMsg'); m.style.display='inline'; setTimeout(()=>m.style.display='none',1400);
-    }catch{ alert('Copy failed. Long-press to copy.'); }
-  });
-
-  // Year
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+  <!-- X/Twitter widgets for the tweet preview -->
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

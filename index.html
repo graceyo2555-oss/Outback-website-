@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Butts — TON Meme & Sticker Pack</title>
-  <meta name="description" content="Butts — a playful TON meme inspired by the official Telegram animated sticker pack. Proof included via image + Telegram tweet link." />
+  <meta name="description" content="Butts — a playful TON meme inspired by the official Telegram animated sticker pack. Includes proof image and tweet link." />
   <meta property="og:title" content="Butts — TON Meme & Sticker Pack" />
   <meta property="og:description" content="Playful TON meme. Official Telegram sticker pack referenced + proof from Telegram’s tweet." />
   <meta property="og:type" content="website" />
@@ -12,46 +12,57 @@
 
   <style>
     :root{
-      --bg: #0f2418;          /* deep green background (from greeneton.com) */
-      --card: rgba(255,255,255,0.06);
-      --text: #e7f5ed;
-      --muted: #b7d1c3;
-      --accent: #32d296;
-      --ton: #0098ea;
-      --radius: 18px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg:#0f2418;            /* deep green background */
+      --card:rgba(255,255,255,.06);
+      --text:#e7f5ed;
+      --muted:#b7d1c3;
+      --accent:#32d296;
+      --ton:#0098ea;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
     }
-
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.6;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-    a{color: var(--accent); text-decoration: none}
-    a:hover{text-decoration: underline}
-    .wrap{max-width: 1100px; margin: 0 auto; padding: 28px}
-    .glass{background: var(--card); border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); box-shadow: var(--shadow); backdrop-filter: blur(6px);}
-    .btn{display:inline-flex; align-items:center; gap:.5rem; padding:.8rem 1rem; border-radius:14px; background:rgba(255,255,255,.08); color:var(--text); font-weight:600}
-    .btn:hover{opacity:.85}
-    header .hero{display:grid; gap:22px; align-items:center; grid-template-columns:1.2fr .8fr;}
-    @media(max-width:900px){header .hero{grid-template-columns:1fr}}
-    .title{font-size:clamp(2.2rem,2.5vw+1.2rem,4rem); margin:0}
-    .subtitle{color: var(--muted); margin-top:.5rem}
-    footer{opacity:.8; font-size:.9rem; padding: 24px 0 40px; text-align:center}
-    .butts-gif{max-width:100%; height:auto; position:absolute; opacity:0; transition:opacity 1s ease-in-out;}
-    .butts-gif.active{opacity:1;}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px}
+    .glass{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(6px)}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1rem;border-radius:14px;background:rgba(255,255,255,.08);color:var(--text);font-weight:600}
+    .btn:hover{opacity:.9}
+    header .hero{display:grid;gap:22px;align-items:center;grid-template-columns:1.2fr .8fr}
+    @media (max-width:900px){header .hero{grid-template-columns:1fr}}
+    .title{font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);margin:0;line-height:1.1}
+    .subtitle{color:var(--muted);margin-top:.5rem}
+    footer{opacity:.85;font-size:.9rem;padding:24px 0 40px;text-align:center}
+
+    /* Rotator */
+    .rotator{aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;position:relative}
+    .butts-gif{
+      position:absolute;inset:0;margin:auto;
+      width:100%;height:100%;object-fit:contain;
+      opacity:0;transition:opacity 1s ease-in-out;
+      border-radius:var(--radius);
+    }
+    .butts-gif.active{opacity:1}
   </style>
 </head>
 <body>
   <div class="wrap">
     <!-- Top bar -->
-    <div class="glass" style="padding:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-      <span style="font-weight:700; color:var(--muted)">🍑 TON Meme</span>
-      <nav style="display:flex; gap:10px; flex-wrap:wrap;">
-        <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank">Sticker Pack</a>
-        <a class="btn" href="https://ton.org" target="_blank">About TON</a>
+    <div class="glass" style="padding:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <span style="font-weight:700;color:var(--muted)">🍑 TON Meme</span>
+      <nav style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank" rel="noopener">Sticker Pack</a>
+        <a class="btn" href="https://ton.org" target="_blank" rel="noopener">About TON</a>
       </nav>
     </div>
 
@@ -60,18 +71,22 @@
       <div class="glass hero" style="padding:22px;">
         <div>
           <h1 class="title">BUTTS <span style="color:var(--accent)">on TON</span></h1>
-          <p class="subtitle">A playful meme project celebrating the <strong>official Telegram animated sticker pack “Butts”</strong>. Simple. Silly. On-chain.</p>
-          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+          <p class="subtitle">
+            A playful meme project celebrating the <strong>official Telegram animated sticker pack “Butts”</strong>.
+            Simple. Silly. On-chain.
+          </p>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
             <a class="btn" href="#proof">See Proof</a>
-            <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank">Add Stickers</a>
+            <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank" rel="noopener">Add Stickers</a>
           </div>
         </div>
+
         <!-- Rotating GIF Showcase -->
-        <div class="glass" style="aspect-ratio:1/1; display:grid; place-items:center; overflow:hidden; position:relative;">
-          <img class="butts-gif active" src="https://i.ibb.co/ks6G2Xxf" alt="Butts GIF 1">
-          <img class="butts-gif" src="https://i.ibb.co/9mgsS8fH" alt="Butts GIF 2">
-          <img class="butts-gif" src="https://i.ibb.co/5WWBR91Q" alt="Butts GIF 3">
-          <img class="butts-gif" src="https://i.ibb.co/B2F1mcd5" alt="Butts GIF 4">
+        <div class="glass rotator" id="butts-rotator">
+          <img class="butts-gif active" src="https://i.ibb.co/cSXyhQ1H/IMG-20251012-062343-208.gif" alt="Butts GIF 1">
+          <img class="butts-gif" src="https://i.ibb.co/cSXyhQ1H/IMG-20251012-062343-208.gif" alt="Butts GIF 2">
+          <img class="butts-gif" src="https://i.ibb.co/JRR5sdcY/IMG-20251012-062359-668.gif" alt="Butts GIF 3">
+          <img class="butts-gif" src="https://i.ibb.co/k2vdp5ks/IMG-20251012-062353-954.gif" alt="Butts GIF 4">
         </div>
       </div>
     </header>
@@ -80,10 +95,10 @@
     <section id="proof" style="margin-top:24px;">
       <div class="glass" style="padding:22px;">
         <h2 style="margin-top:0;">Proof from Telegram</h2>
-        <p class="subtitle">Official Telegram posted about the “Butts” stickers. Here’s the proof image + the direct link to the tweet:</p>
-        <img src="https://i.ibb.co/KJ2kJzL/image.jpg" alt="Proof screenshot from Telegram Twitter" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow); margin-top:10px;" />
+        <p class="subtitle">Telegram’s official account highlighted the animated butt stickers. Proof image + direct tweet link:</p>
+        <img src="https://i.ibb.co/KJ2kJzL/image.jpg" alt="Proof screenshot from Telegram Twitter" style="max-width:100%;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:10px;" />
         <p style="margin-top:12px;">
-          🔗 <a href="https://x.com/telegram/status/1164909277053693954" target="_blank">View the official tweet on X</a>
+          🔗 <a href="https://x.com/telegram/status/1164909277053693954" target="_blank" rel="noopener">View the official tweet on X</a>
         </p>
       </div>
     </section>
@@ -96,16 +111,18 @@
     </footer>
   </div>
 
-  <!-- Slideshow Script -->
+  <!-- Slideshow script -->
   <script>
-    const gifs = document.querySelectorAll('.butts-gif');
-    let current = 0;
-
-    setInterval(() => {
-      gifs[current].classList.remove('active');
-      current = (current + 1) % gifs.length;
-      gifs[current].classList.add('active');
-    }, 4000); // change every 4 seconds
+    (function(){
+      const imgs = document.querySelectorAll('.butts-gif');
+      if(!imgs.length) return;
+      let i = 0;
+      setInterval(() => {
+        imgs[i].classList.remove('active');
+        i = (i + 1) % imgs.length;
+        imgs[i].classList.add('active');
+      }, 4000);
+    })();
   </script>
 </body>
 </html>

@@ -27,30 +27,27 @@
     header .hero{display:grid;gap:22px;align-items:center;grid-template-columns:1.2fr .8fr}
     @media (max-width:900px){header .hero{grid-template-columns:1fr}}
 
-    /* Titles with inline emoji GIFs */
-    .title{
-      font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);
-      margin:0;
-      line-height:1.1;
+    .title, .hot-title {
       text-align:center;
-      white-space:nowrap;
-    }
-    .hot-title{
       margin:0;
-      text-align:center;
-      white-space:nowrap;
-      font-size:clamp(1.4rem,1.3vw + 1rem,2rem);
     }
+    .title-line, .hot-title-line {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      white-space:nowrap; /* force one line */
+    }
+    .title-line{font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);line-height:1.1}
+    .hot-title-line{font-size:clamp(1.4rem,1.3vw + 1rem,2rem)}
+
     .emj{
-      display:inline-block;
       width:34px;height:34px;
       object-fit:cover;
       border-radius:6px;
-      vertical-align:middle;
     }
     @media (max-width:480px){
-      .title,.hot-title{white-space:normal}
-      .emj{width:26px;height:26px}
+      .title-line, .hot-title-line{gap:4px}
+      .emj{width:24px;height:24px}
     }
 
     .subtitle{color:var(--muted);margin-top:.5rem}
@@ -84,9 +81,11 @@
       <div class="glass hero" style="padding:22px;">
         <div>
           <h1 class="title">
-            <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Left Emoji">
-            BUTTS <span style="color:var(--accent)">on TON</span>
-            <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Right Emoji">
+            <span class="title-line">
+              <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Left Emoji">
+              BUTTS <span style="color:var(--accent)">on TON</span>
+              <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Right Emoji">
+            </span>
           </h1>
 
           <p class="subtitle">
@@ -127,9 +126,11 @@
     <section id="gallery" style="margin-top:24px;">
       <div class="glass" style="padding:22px;">
         <h2 class="hot-title">
-          <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Butts Emoji Left">
-          Hot Butts
-          <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Butts Emoji Right">
+          <span class="hot-title-line">
+            <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Butts Emoji Left">
+            Hot Butts
+            <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Butts Emoji Right">
+          </span>
         </h2>
 
         <div class="gallery">

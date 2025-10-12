@@ -40,6 +40,8 @@
     .title{font-size:clamp(2.2rem,2.5vw+1.2rem,4rem); margin:0}
     .subtitle{color: var(--muted); margin-top:.5rem}
     footer{opacity:.8; font-size:.9rem; padding: 24px 0 40px; text-align:center}
+    .butts-gif{max-width:100%; height:auto; position:absolute; opacity:0; transition:opacity 1s ease-in-out;}
+    .butts-gif.active{opacity:1;}
   </style>
 </head>
 <body>
@@ -64,8 +66,12 @@
             <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank">Add Stickers</a>
           </div>
         </div>
-        <div class="glass" style="aspect-ratio:1/1; display:grid; place-items:center;">
-          <div style="font-size:4rem;">🍑</div>
+        <!-- Rotating GIF Showcase -->
+        <div class="glass" style="aspect-ratio:1/1; display:grid; place-items:center; overflow:hidden; position:relative;">
+          <img class="butts-gif active" src="https://i.ibb.co/ks6G2Xxf" alt="Butts GIF 1">
+          <img class="butts-gif" src="https://i.ibb.co/9mgsS8fH" alt="Butts GIF 2">
+          <img class="butts-gif" src="https://i.ibb.co/5WWBR91Q" alt="Butts GIF 3">
+          <img class="butts-gif" src="https://i.ibb.co/B2F1mcd5" alt="Butts GIF 4">
         </div>
       </div>
     </header>
@@ -89,5 +95,17 @@
       </div>
     </footer>
   </div>
+
+  <!-- Slideshow Script -->
+  <script>
+    const gifs = document.querySelectorAll('.butts-gif');
+    let current = 0;
+
+    setInterval(() => {
+      gifs[current].classList.remove('active');
+      current = (current + 1) % gifs.length;
+      gifs[current].classList.add('active');
+    }, 4000); // change every 4 seconds
+  </script>
 </body>
 </html>

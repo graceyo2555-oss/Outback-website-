@@ -25,7 +25,7 @@
     .btn:hover{opacity:.9}
     header .hero{display:grid;gap:22px;align-items:center;grid-template-columns:1.2fr .8fr}
     @media (max-width:900px){header .hero{grid-template-columns:1fr}}
-    .title{font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);margin:0;line-height:1.1}
+    .title{font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);margin:0;line-height:1.1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
     .subtitle{color:var(--muted);margin-top:.5rem}
     footer{opacity:.85;font-size:.9rem;padding:24px 0 40px;text-align:center}
 
@@ -56,7 +56,15 @@
     <header style="margin-top:20px;">
       <div class="glass hero" style="padding:22px;">
         <div>
-          <h1 class="title">BUTTS <span style="color:var(--accent)">on TON</span></h1>
+          <h1 class="title">
+            <img src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" 
+                 alt="Left Emoji" 
+                 style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+            BUTTS <span style="color:var(--accent)">on TON</span>
+            <img src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" 
+                 alt="Right Emoji" 
+                 style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+          </h1>
           <p class="subtitle">
             A playful meme project celebrating the <strong>official Telegram animated sticker pack “Butts”</strong>. 
             Simple. Silly. On-chain.
@@ -94,14 +102,14 @@
     <!-- Hot Butts Gallery -->
     <section id="gallery" style="margin-top:24px;">
       <div class="glass" style="padding:22px;">
-        <h2 style="margin-top:0;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;">
+        <h2 style="margin-top:0;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
           <img src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" 
                alt="Butts Emoji Left" 
-               style="width:36px;height:36px;object-fit:cover;border-radius:6px;">
-          🔥 Hot Butts
+               style="width:28px;height:28px;object-fit:cover;border-radius:6px;">
+          Hot Butts
           <img src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" 
                alt="Butts Emoji Right" 
-               style="width:36px;height:36px;object-fit:cover;border-radius:6px;">
+               style="width:28px;height:28px;object-fit:cover;border-radius:6px;">
         </h2>
         <div class="gallery">
           <figure class="tile"><img src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Hot Butts GIF A"></figure>

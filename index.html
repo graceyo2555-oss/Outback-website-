@@ -16,22 +16,49 @@
       --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
     }
-    body{margin:0;font-family:system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.6;}
+    body{margin:0;font-family:system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
     a{color:var(--accent);text-decoration:none}
     a:hover{text-decoration:underline}
     .wrap{max-width:1100px;margin:0 auto;padding:28px}
     .glass{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(6px)}
     .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1rem;border-radius:14px;background:rgba(255,255,255,.08);color:var(--text);font-weight:600}
     .btn:hover{opacity:.9}
+
     header .hero{display:grid;gap:22px;align-items:center;grid-template-columns:1.2fr .8fr}
     @media (max-width:900px){header .hero{grid-template-columns:1fr}}
-    .title{font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);margin:0;line-height:1.1;display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}
+
+    /* Title text now uses inline flow (no flex) so emoji-GIFs stay on the baseline */
+    .title{
+      font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);
+      margin:0;
+      line-height:1.1;
+      text-align:center;
+      white-space:nowrap; /* keep on one line */
+    }
+    /* Hot section heading */
+    .hot-title{
+      margin:0;
+      text-align:center;
+      white-space:nowrap;
+      font-size:clamp(1.4rem,1.3vw + 1rem,2rem);
+    }
+    /* Emoji-GIF utility */
+    .emj{
+      width:34px;height:34px;object-fit:cover;border-radius:6px;
+      vertical-align:middle; /* keep aligned with text */
+    }
+    /* Slightly smaller emoji on small screens to prevent overflow */
+    @media (max-width:480px){
+      .title,.hot-title{white-space:normal}
+      .emj{width:26px;height:26px}
+    }
+
     .subtitle{color:var(--muted);margin-top:.5rem}
     footer{opacity:.85;font-size:.9rem;padding:24px 0 40px;text-align:center}
 
     /* Rotator */
     .rotator{aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;position:relative}
-    .butts-gif{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 1s ease-in-out;border-radius:var(--radius);}
+    .butts-gif{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 1s ease-in-out;border-radius:var(--radius)}
     .butts-gif.active{opacity:1}
 
     /* Gallery */
@@ -47,8 +74,8 @@
     <div class="glass" style="padding:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
       <span style="font-weight:700;color:var(--muted)">🍑 TON Meme</span>
       <nav style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank">Sticker Pack</a>
-        <a class="btn" href="https://ton.org" target="_blank">About TON</a>
+        <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank" rel="noopener">Sticker Pack</a>
+        <a class="btn" href="https://ton.org" target="_blank" rel="noopener">About TON</a>
       </nav>
     </div>
 
@@ -57,29 +84,26 @@
       <div class="glass hero" style="padding:22px;">
         <div>
           <h1 class="title">
-            <img src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" 
-                 alt="Left Emoji" 
-                 style="width:34px;height:34px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-right:4px;">
-            BUTTS <span style="color:var(--accent)">on TON</span>
-            <img src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" 
-                 alt="Right Emoji" 
-                 style="width:34px;height:34px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-left:4px;">
+            <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Left Emoji">
+            &nbsp;BUTTS <span style="color:var(--accent)">on TON</span>&nbsp;
+            <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Right Emoji">
           </h1>
+
           <p class="subtitle">
             A playful meme project celebrating the <strong>official Telegram animated sticker pack “Butts”</strong>. 
             Simple. Silly. On-chain.
           </p>
-          <p style="margin-top:6px;font-weight:bold;text-decoration:underline;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-            Who doesn’t like Butts 
-            <img src="https://i.ibb.co/cSXyhQ1H/IMG-20251012-062343-208.gif" 
-                 alt="Butts Emoji" 
-                 style="width:28px;height:28px;object-fit:cover;border-radius:6px;">
+          <p style="margin-top:6px;font-weight:bold;text-decoration:underline;display:inline-block;text-align:center;width:100%;">
+            Who doesn’t like Butts
+            <img class="emj" style="width:28px;height:28px" src="https://i.ibb.co/cSXyhQ1H/IMG-20251012-062343-208.gif" alt="Butts Emoji">
           </p>
+
           <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
             <a class="btn" href="#proof">See Proof</a>
             <a class="btn" href="https://t.me/addstickers/AnimatedButts" target="_blank" rel="noopener">Add Stickers</a>
           </div>
         </div>
+
         <div class="glass rotator" id="butts-rotator">
           <img class="butts-gif active" src="https://i.ibb.co/cSXyhQ1H/IMG-20251012-062343-208.gif" alt="Butts GIF 1">
           <img class="butts-gif" src="https://i.ibb.co/cSXyhQ1H/IMG-20251012-062343-208.gif" alt="Butts GIF 2">
@@ -95,22 +119,19 @@
         <h2 style="margin-top:0;">Proof from Telegram</h2>
         <p class="subtitle">Telegram’s official account highlighted the animated butt stickers. Proof image + tweet link:</p>
         <img src="https://i.ibb.co/KJ2kJzL/image.jpg" alt="Proof screenshot from Telegram Twitter" style="max-width:100%;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:10px;" />
-        <p style="margin-top:12px;">🔗 <a href="https://x.com/telegram/status/1164909277053693954" target="_blank">View the official tweet on X</a></p>
+        <p style="margin-top:12px;">🔗 <a href="https://x.com/telegram/status/1164909277053693954" target="_blank" rel="noopener">View the official tweet on X</a></p>
       </div>
     </section>
 
     <!-- Hot Butts Gallery -->
     <section id="gallery" style="margin-top:24px;">
       <div class="glass" style="padding:22px;">
-        <h2 style="margin-top:0;display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;">
-          <img src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" 
-               alt="Butts Emoji Left" 
-               style="width:28px;height:28px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-right:4px;">
-          Hot Butts
-          <img src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" 
-               alt="Butts Emoji Right" 
-               style="width:28px;height:28px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-left:4px;">
+        <h2 class="hot-title">
+          <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Butts Emoji Left">
+          &nbsp;Hot Butts&nbsp;
+          <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Butts Emoji Right">
         </h2>
+
         <div class="gallery">
           <figure class="tile"><img src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Hot Butts GIF A"></figure>
           <figure class="tile"><img src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Hot Butts GIF B"></figure>

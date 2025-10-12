@@ -27,27 +27,27 @@
     header .hero{display:grid;gap:22px;align-items:center;grid-template-columns:1.2fr .8fr}
     @media (max-width:900px){header .hero{grid-template-columns:1fr}}
 
-    /* Title text now uses inline flow (no flex) so emoji-GIFs stay on the baseline */
+    /* Titles with inline emoji GIFs */
     .title{
       font-size:clamp(2.2rem,2.5vw + 1.2rem,4rem);
       margin:0;
       line-height:1.1;
       text-align:center;
-      white-space:nowrap; /* keep on one line */
+      white-space:nowrap;
     }
-    /* Hot section heading */
     .hot-title{
       margin:0;
       text-align:center;
       white-space:nowrap;
       font-size:clamp(1.4rem,1.3vw + 1rem,2rem);
     }
-    /* Emoji-GIF utility */
     .emj{
-      width:34px;height:34px;object-fit:cover;border-radius:6px;
-      vertical-align:middle; /* keep aligned with text */
+      display:inline-block;
+      width:34px;height:34px;
+      object-fit:cover;
+      border-radius:6px;
+      vertical-align:middle;
     }
-    /* Slightly smaller emoji on small screens to prevent overflow */
     @media (max-width:480px){
       .title,.hot-title{white-space:normal}
       .emj{width:26px;height:26px}
@@ -85,7 +85,7 @@
         <div>
           <h1 class="title">
             <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Left Emoji">
-            &nbsp;BUTTS <span style="color:var(--accent)">on TON</span>&nbsp;
+            BUTTS <span style="color:var(--accent)">on TON</span>
             <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Right Emoji">
           </h1>
 
@@ -93,7 +93,7 @@
             A playful meme project celebrating the <strong>official Telegram animated sticker pack “Butts”</strong>. 
             Simple. Silly. On-chain.
           </p>
-          <p style="margin-top:6px;font-weight:bold;text-decoration:underline;display:inline-block;text-align:center;width:100%;">
+          <p style="margin-top:6px;font-weight:bold;text-decoration:underline;text-align:center;">
             Who doesn’t like Butts
             <img class="emj" style="width:28px;height:28px" src="https://i.ibb.co/cSXyhQ1H/IMG-20251012-062343-208.gif" alt="Butts Emoji">
           </p>
@@ -128,7 +128,7 @@
       <div class="glass" style="padding:22px;">
         <h2 class="hot-title">
           <img class="emj" src="https://i.ibb.co/j9fgs6xk/IMG-20251012-062404-822.gif" alt="Butts Emoji Left">
-          &nbsp;Hot Butts&nbsp;
+          Hot Butts
           <img class="emj" src="https://i.ibb.co/JjRH93cQ/IMG-20251012-070736-015.gif" alt="Butts Emoji Right">
         </h2>
 
